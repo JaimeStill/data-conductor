@@ -5,6 +5,7 @@ public static class ServiceRegistrant
 {
     public static void AddAppServices(this IServiceCollection services)
     {
-        services.AddScoped<ConnectorService>();        
+        services.AddScoped<ConnectorService>();     
+        services.AddScoped<StatementService>();   
     }    
 }

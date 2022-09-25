@@ -7,5 +7,13 @@ namespace Conductor.Api.Controllers;
 [Route("api/[controller]")]
 public class ConnectorController : EntityController<Connector>
 {
-    public ConnectorController(ConnectorService svc) : base(svc) { }
+    readonly ConnectorService connectorSvc;
+    public ConnectorController(ConnectorService svc) : base(svc)
+    {
+        connectorSvc = svc;
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> ValidateDatabase([FromBody]Connector connector) =>
+        Ok(await connectorSvc.ValidateDatabase(connector));
 }
