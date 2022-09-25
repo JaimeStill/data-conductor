@@ -7,7 +7,7 @@ using Conductor.Services.Extensions;
 using Conductor.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Conductor.Services;
+namespace Conductor.Services.Api;
 public class EntityService<T> : IService<T> where T : Entity
 {
     protected ConductorContext db;

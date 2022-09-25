@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conductor.Services", "Condu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conductor.Console", "Conductor.Console\Conductor.Console.csproj", "{FDEF0046-6257-4550-9887-47D65E64A47E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conductor.DbCli", "Conductor.DbCli\Conductor.DbCli.csproj", "{CBCB2043-33AE-451B-9B06-EFD6EA995875}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{FDEF0046-6257-4550-9887-47D65E64A47E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDEF0046-6257-4550-9887-47D65E64A47E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDEF0046-6257-4550-9887-47D65E64A47E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBCB2043-33AE-451B-9B06-EFD6EA995875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBCB2043-33AE-451B-9B06-EFD6EA995875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBCB2043-33AE-451B-9B06-EFD6EA995875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBCB2043-33AE-451B-9B06-EFD6EA995875}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
