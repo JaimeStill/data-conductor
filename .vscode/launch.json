@@ -1,0 +1,44 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "conductor-build",
+            "program": "${workspaceFolder}/src/server/Conductor.Api/bin/Debug/net6.0/Conductor.Api.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/server/Conductor.Api",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        {
+            "name": "Debug DbCli",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "conductor-build",
+            "program": "${workspaceFolder}/src/server/Conductor.DbCli/bin/Debug/net6.0/Conductor.DbCli.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/server/Conductor.DbCli",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        {
+            "name": "Debug Console",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "conductor-build",
+            "program": "${workspaceFolder}/src/server/Conductor.Console/bin/Debug/net6.0/Conductor.Console.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/server/Conductor.Console",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        }
+    ]
+}

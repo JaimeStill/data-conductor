@@ -1,0 +1,53 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "conductor-build",
+            "command": "dotnet",
+            "type": "shell",
+            "problemMatcher": "$msCompile",
+            "args": [
+                "build"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/src/server/"
+            }
+        },
+        {
+            "label": "conductor-start",
+            "command": "dotnet",
+            "type": "process",
+            "problemMatcher": "$msCompile",
+            "args": [
+                "watch",
+                "run"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/src/server/Conductor.Api/"
+            },
+            "presentation": {
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "db-update",
+            "command": "dotnet ef database update -s ../Conductor.Api",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/server/Conductor.Data"
+            }
+        },
+        {
+            "label": "db-seed",
+            "command": "dotnet",
+            "type": "shell",
+            "problemMatcher": "$msCompile",
+            "args": [
+                "run"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder/src/server/Conductor.DbCli"
+            }
+        }
+    ]
+}

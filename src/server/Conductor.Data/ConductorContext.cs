@@ -12,20 +12,27 @@ public class ConductorContext : DbContext
 
     public ConductorContext(DbContextOptions<ConductorContext> options) : base(options)
     {
-        ChangeTracker.StateChanged += CompleteEntity;
+        SavingChanges += CompleteEntity;
     }
 
-    private void CompleteEntity(object sender, EntityEntryEventArgs e)
+    private IEnumerable<EntityEntry> ChangeTrackerEntities() =>
+        ChangeTracker
+            .Entries()
+            .Where(x => x.Entity is Entity);
+
+    private bool EntitiesChanged() =>
+        ChangeTrackerEntities().Any();
+
+    private void CompleteEntity(object sender, SavingChangesEventArgs e)
     {
-        if (e.Entry.Entity is Entity entity)
+        if (EntitiesChanged())
         {
-            switch (e.Entry.State)
-            {
-                case EntityState.Modified:
-                case EntityState.Added:
-                    entity.Complete();
-                    break;
-            }
+            var entities = ChangeTrackerEntities()
+                .Select(x => x.Entity)
+                .Cast<Entity>();
+
+            foreach (Entity entity in entities)
+                entity.Complete();
         }
     }
 
