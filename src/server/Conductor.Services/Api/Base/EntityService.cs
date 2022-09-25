@@ -25,6 +25,11 @@ public class EntityService<T> : IService<T> where T : Entity
         (values, term) =>
             values;
 
+    protected virtual void ClearGraph(T entity)
+    {
+        return;
+    }
+
     protected virtual IQueryable<T> SetGraph(DbSet<T> data) =>
         data;
 
@@ -44,6 +49,14 @@ public class EntityService<T> : IService<T> where T : Entity
         );
     }
 
+    protected virtual async Task<List<E>> Get<E>(
+        IQueryable<E> queryable,
+        string sort = "Name"
+    ) where E : Entity =>
+        await queryable
+            .ApplySorting(new QueryOptions { Sort = sort })
+            .ToListAsync();
+
     protected virtual async Task<T> Add(T entity)
     {
         try
@@ -62,6 +75,7 @@ public class EntityService<T> : IService<T> where T : Entity
     {
         try
         {
+            ClearGraph(entity);
             set.Update(entity);
             await db.SaveChangesAsync();
             return entity;
