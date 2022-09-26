@@ -25,4 +25,16 @@ public class StatementController : EntityController<Statement>
         [FromRoute] int connectorId,
         [FromQuery] string sort = "Name"
     ) => Ok(await statementSvc.GetByConnector(connectorId, sort));
+
+    [HttpPost("[action]")]
+    [Produces("application/json")]
+    public async Task<IActionResult> Execute([FromBody]Statement statement) =>
+        Ok(await statementSvc.Execute(statement));
+
+    [HttpPost("[action]/{*props}")]
+    [Produces("application/json")]
+    public async Task<IActionResult> ExecuteWithProps(
+        [FromBody] Statement statement,
+        [FromRoute] string props
+    ) => Ok(await statementSvc.Execute(statement, props));
 }
