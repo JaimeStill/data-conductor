@@ -2,7 +2,27 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "conductor-build",
+            "label": "client-build",
+            "command": "npm run build",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/src/app/"
+            }
+        },
+        {
+            "label": "client-start",
+            "command": "npm run start",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/src/app/"
+            },
+            "presentation": {
+                "panel": "dedicated"
+            },
+            "isBackground": true
+        },
+        {
+            "label": "server-build",
             "command": "dotnet",
             "type": "shell",
             "problemMatcher": "$msCompile",
@@ -14,7 +34,7 @@
             }
         },
         {
-            "label": "conductor-start",
+            "label": "server-start",
             "command": "dotnet",
             "type": "process",
             "problemMatcher": "$msCompile",
