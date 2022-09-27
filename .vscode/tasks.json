@@ -46,7 +46,7 @@
                 "run"
             ],
             "options": {
-                "cwd": "${workspaceFolder/src/server/Conductor.DbCli"
+                "cwd": "${workspaceFolder}/src/server/Conductor.DbCli"
             }
         }
     ]

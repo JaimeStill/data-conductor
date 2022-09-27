@@ -11,12 +11,6 @@ public class StatementService : EntityService<Statement>
 {
     public StatementService(ConductorContext db) : base(db) { }
 
-    protected override Func<IQueryable<Statement>, string, IQueryable<Statement>> Search =>
-        (values, term) =>
-            values.Where(x =>
-                x.Name.ToLower().Contains(term.ToLower())
-            );
-
     protected override void ClearGraph(Statement entity)
     {
         entity.Connector = null;
