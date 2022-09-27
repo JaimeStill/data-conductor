@@ -33,7 +33,7 @@ public class QueryOptions
     {
         Page = GeneratePage(queryParams.Page, 1),
         PageSize = GeneratePage(queryParams.PageSize, pageSize),
-        Search = queryParams.Search,
+        Search = queryParams?.Search?.Trim(),
         Sort = queryParams.Sort
     };
 }

@@ -11,19 +11,19 @@ namespace Conductor.Services.Api;
 public class EntityService<T> : IService<T> where T : Entity
 {
     protected ConductorContext db;
-    protected DbSet<T> set;
     protected IQueryable<T> query;
 
     public EntityService(ConductorContext db)
     {
         this.db = db;
-        set = db.Set<T>();
-        query = SetGraph(set);
+        query = SetGraph(db.Set<T>());
     }
 
     protected virtual Func<IQueryable<T>, string, IQueryable<T>> Search =>
         (values, term) =>
-            values;
+            values.Where(x =>
+                x.Name.ToLower().Contains(term.ToLower())
+            );
 
     protected virtual void ClearGraph(T entity)
     {
@@ -61,7 +61,7 @@ public class EntityService<T> : IService<T> where T : Entity
     {
         try
         {
-            await set.AddAsync(entity);
+            await db.Set<T>().AddAsync(entity);
             await db.SaveChangesAsync();
             return entity;
         }
@@ -76,7 +76,7 @@ public class EntityService<T> : IService<T> where T : Entity
         try
         {
             ClearGraph(entity);
-            set.Update(entity);
+            db.Set<T>().Update(entity);
             await db.SaveChangesAsync();
             return entity;
         }
@@ -98,7 +98,7 @@ public class EntityService<T> : IService<T> where T : Entity
         await query.FirstOrDefaultAsync(x => x.Url.ToLower() == url.ToLower());    
 
     public virtual async Task<bool> ValidateName(T entity) =>
-        !await set.AnyAsync(x =>
+        !await db.Set<T>().AnyAsync(x =>
             x.Id != entity.Id
             && x.Name.ToLower() == entity.Name.ToLower()
         );
@@ -138,7 +138,7 @@ public class EntityService<T> : IService<T> where T : Entity
     {
         try
         {
-            set.Remove(entity);
+            db.Set<T>().Remove(entity);
             int result = await db.SaveChangesAsync();
 
             return result > 0

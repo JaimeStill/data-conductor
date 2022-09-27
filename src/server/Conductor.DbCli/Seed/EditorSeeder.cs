@@ -12,9 +12,9 @@ public class EditorSeeder : Seeder<Editor, ConductorContext>
         {
             new()
             {
-                Name = "Consolas Default",
-                Font = "Consolas",
+                Font = "Courier New",
                 FontSize = 14,
+                Name = "Default",
                 TabSpacing = 4
             }
         };
