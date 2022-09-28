@@ -1,1 +1,40 @@
-<p class="mat-title m8">Home</p>
+<ng-template #loading>
+    <mat-progress-bar mode="indeterminate"
+                      color="accent"></mat-progress-bar>
+</ng-template>
+<section fxLayout="row | wrap"
+         fxLayoutAlign="start start"
+         fxLayoutGap="8px">
+    <section fxLayout="column"
+             fxLayoutAlign="start stretch">
+        <p class="m8 mat-title"
+           fxFlexAlign="center">Statements</p>
+        <ng-container *ngIf="statementSrc else loading">
+            <async-source searchLabel="Search Statements"
+                          emptyLabel="No Statements Available"
+                          layout="column"
+                          alignment="start stretch"
+                          [inlineControls]="false"
+                          [src]="statementSrc">
+                <ng-container *ngIf="statementSrc.result$ | async as query else loading">
+                    <section *ngFor="let s of query.data"
+                             fxLayout="row"
+                             fxLayoutAlign="space-between center"
+                             class="my4 p4 background-card rounded card-outline-accent">
+                        <p class="m4 mat-subheading-1">{{s.name}}</p>
+                        <button mat-icon-button
+                                color="primary"
+                                (click)="download(s)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
+                    </section>
+                </ng-container>
+            </async-source>
+        </ng-container>
+    </section>
+    <section fxLayout="column"
+             fxLayoutAlign="start stretch"
+             fxFlex>
+        <p class="m8 mat-subheading-2">Put Stuff Here</p>
+    </section>
+</section>

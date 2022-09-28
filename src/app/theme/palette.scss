@@ -120,7 +120,7 @@
   );
 
   $palette: map.set($palette, "primary", map.get($palette, "green"));
-  $palette: map.set($palette, "accent", map.get($palette, "gray"));
+  $palette: map.set($palette, "accent", map.get($palette, "blue-gray"));
   $palette: map.set($palette, "warn", map.get($palette, "red"));
 
   @return $palette;
