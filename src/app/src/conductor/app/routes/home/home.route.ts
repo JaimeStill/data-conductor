@@ -1,26 +1,58 @@
 import {
   Component,
+  OnDestroy,
   OnInit
 } from '@angular/core';
-import { QuerySource, Statement } from '../../models';
 
-import { StatementApi } from '../../services';
+import {
+  Connector,
+  QuerySource
+} from '../../models';
+
+import {
+  ConfirmDialog,
+  ConnectorDialog
+} from '../../dialogs';
+
+import { MatDialog } from '@angular/material/dialog';
+import { ConnectorApi } from '../../services';
 
 @Component({
   selector: 'home-route',
   templateUrl: 'home.route.html'
 })
-export class HomeRoute implements OnInit {
-  statementSrc: QuerySource<Statement>;
+export class HomeRoute implements OnInit, OnDestroy {
+  connectorSrc: QuerySource<Connector>;
 
   constructor(
-    public statementApi: StatementApi
+    private dialog: MatDialog,
+    public connectorApi: ConnectorApi
   ) { }
 
-  ngOnInit() {
-    this.statementSrc = this.statementApi.query();
+  ngOnInit(): void {
+    this.connectorSrc = this.connectorApi.query();
   }
 
-  download = (statement: Statement) =>
-    this.statementApi.download(statement);
+  ngOnDestroy(): void {
+    this.connectorSrc.unsubscribe();
+  }
+
+  add = () => this.dialog.open(ConnectorDialog, {
+    data: {
+      id: 0,
+      name: '',
+      database: '',
+      server: ''
+    } as Connector,
+    disableClose: true
+  })
+  .afterClosed()
+  .subscribe((res: Connector) => res && this.connectorSrc.refresh());
+
+  edit = (connector: Connector) => this.dialog.open(ConnectorDialog, {
+    data: Object.assign({} as Connector, connector),
+    disableClose: true    
+  })
+  .afterClosed()
+  .subscribe((res: Connector) => res && this.connectorSrc.refresh());
 }

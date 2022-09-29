@@ -1,9 +1,7 @@
-import { CardComponents } from './cards';
-import { ControlComponents } from './controls';
-import { LayoutComponents } from './layout';
+import { ConnectorComponents } from './connector';
+import { GeneralComponents } from './general';
 
 export const Components = [
-    ...CardComponents,
-    ...ControlComponents,
-    ...LayoutComponents
+    ...ConnectorComponents,
+    ...GeneralComponents
 ];

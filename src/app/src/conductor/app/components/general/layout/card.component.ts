@@ -9,8 +9,9 @@ import {
 })
 export class CardComponent {
     @Input() width: number | string = 360;
+    @Input() layout = 'column';
     @Input() alignment = 'start stretch';
-    @Input() cardStyle = 'card-outline-accent rounded';
-    @Input() padding: number = 8;
+    @Input() options = 'card-outline-accent rounded';
+    @Input() padding: number = 0;
     @Input() margin: number = 4;
 }

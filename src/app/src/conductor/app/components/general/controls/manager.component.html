@@ -1,0 +1,19 @@
+<card layout="row"
+      alignment="space-between stretch"
+      options="background-card rounded card-outline-accent">
+    <ng-content></ng-content>
+    <section fxLayout="column"
+             fxLayoutAlign="space-between center"
+             class="p4 background-default rounded-right">
+        <button mat-icon-button
+                color="primary"
+                (click)="edit.emit(data)">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button
+                color="warn"
+                (click)="remove.emit(data)">
+            <mat-icon>delete_outline</mat-icon>
+        </button>
+    </section>
+</card>
