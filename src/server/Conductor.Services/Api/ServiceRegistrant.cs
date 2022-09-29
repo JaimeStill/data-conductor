@@ -7,6 +7,6 @@ public static class ServiceRegistrant
     {
         services.AddScoped<ConnectorService>();
         services.AddScoped<EditorService>();
-        services.AddScoped<StatementService>();
+        services.AddScoped<QueryService>();
     }    
 }

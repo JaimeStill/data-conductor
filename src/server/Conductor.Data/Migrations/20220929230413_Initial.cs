@@ -4,7 +4,7 @@
 
 namespace Conductor.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,7 +42,7 @@ namespace Conductor.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Statement",
+                name: "Query",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -54,9 +54,9 @@ namespace Conductor.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Statement", x => x.Id);
+                    table.PrimaryKey("PK_Query", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Statement_Connector_ConnectorId",
+                        name: "FK_Query_Connector_ConnectorId",
                         column: x => x.ConnectorId,
                         principalTable: "Connector",
                         principalColumn: "Id",
@@ -64,8 +64,8 @@ namespace Conductor.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Statement_ConnectorId",
-                table: "Statement",
+                name: "IX_Query_ConnectorId",
+                table: "Query",
                 column: "ConnectorId");
         }
 
@@ -75,7 +75,7 @@ namespace Conductor.Data.Migrations
                 name: "Editor");
 
             migrationBuilder.DropTable(
-                name: "Statement");
+                name: "Query");
 
             migrationBuilder.DropTable(
                 name: "Connector");

@@ -5,7 +5,7 @@ public static class SeedExtensions
 {
     public static async Task Seed(this ConductorContext db)
     {
-        Console.WriteLine("Seeding Connectors with Statements");
+        Console.WriteLine("Seeding Connectors with Queries");
         ConnectorSeeder connectorSeeder = new(db);
         await connectorSeeder.Seed();
 

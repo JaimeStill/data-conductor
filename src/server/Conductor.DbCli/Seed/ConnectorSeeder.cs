@@ -15,7 +15,7 @@ public class ConnectorSeeder : Seeder<Connector, ConductorContext>
                 Database = "AdventureWorks2019",
                 Server = @".\DevSql",
                 Name = "AdventureWorks-DevSql",
-                Statements = new List<Statement>
+                Queries = new List<Query>
                 {
                     new()
                     {

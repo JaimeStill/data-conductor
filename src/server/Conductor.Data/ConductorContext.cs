@@ -8,7 +8,7 @@ public class ConductorContext : DbContext
 {
     public DbSet<Connector> Connectors { get; set; }
     public DbSet<Editor> Editors { get; set; }
-    public DbSet<Statement> Statements { get; set; }
+    public DbSet<Query> Queries { get; set; }
 
     public ConductorContext(DbContextOptions<ConductorContext> options) : base(options)
     {

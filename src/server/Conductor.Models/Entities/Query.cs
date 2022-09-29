@@ -1,5 +1,5 @@
 namespace Conductor.Models.Entities;
-public class Statement : Entity
+public class Query : Entity
 {
     public int ConnectorId { get; set; }
     public string Value { get; set; }

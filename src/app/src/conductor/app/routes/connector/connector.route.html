@@ -1,0 +1,63 @@
+<ng-template #loading>
+    <mat-progress-bar mode="indeterminate"
+                      color="accent"></mat-progress-bar>
+</ng-template>
+<ng-container *ngIf="connector else loading">
+    <section fxLayout="row | wrap"
+             fxLayoutAlign="start start"
+             fxLayoutGap="8px"
+             class="full-height p8">
+        <section fxLayout="column"
+                 fxLayoutAlign="start stretch"
+                 class="card-outline-accent rounded full-height p8">
+            <manager orientation="horizontal"
+                     [data]="connector"
+                     [viewable]="false"
+                     [removable]="false"
+                     (edit)="edit($event)">
+                <connector-display [connector]="connector"></connector-display>
+            </manager>
+            <async-source *ngIf="querySrc"
+                          searchLabel="Search Queries"
+                          emptyLabel="No Queries Available"
+                          layout="column"
+                          alignment="start stretch"
+                          [inlineControls]="false"
+                          [src]="querySrc">
+                <ng-container *ngIf="querySrc.result$ | async as query else loading">
+                    <card *ngFor="let q of query.data"
+                          layout="row"
+                          alignment="start center"
+                          options="card-outline-accent rounded p4">
+                        <p class="m4 mat-subheading-1"
+                           fxFlex>{{q.name}}</p>
+                        <section class="rounded-right">
+                            <button mat-icon-button
+                                    color="primary"
+                                    [matMenuTriggerFor]="queryMenu">
+                                <mat-icon>menu</mat-icon>
+                            </button>
+                            <mat-menu #queryMenu="matMenu">
+                                <button mat-menu-item>Link</button>
+                            </mat-menu>
+                        </section>
+                    </card>
+                </ng-container>
+            </async-source>
+        </section>
+        <section fxLayout="column"
+                 fxLayoutAlign="start stretch"
+                 class="card-outline-accent rounded full-height p8"
+                 fxFlex>
+            <p class="m4 mat-subheading-2"
+               fxFlexAlign="center"
+               fxFlex>Editor</p>
+            <section fxLayout="column"
+                     fxLayoutAlign="start stretch"
+                     class="card-outline-accent rounded p8">
+                <p class="m4 mat-subheading-2"
+                   fxFlexAlign="center">Results</p>
+            </section>
+        </section>
+    </section>
+</ng-container>

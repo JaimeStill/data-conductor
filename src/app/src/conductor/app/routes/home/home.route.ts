@@ -14,6 +14,7 @@ import {
   ConnectorDialog
 } from '../../dialogs';
 
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConnectorApi } from '../../services';
 
@@ -26,6 +27,7 @@ export class HomeRoute implements OnInit, OnDestroy {
 
   constructor(
     private dialog: MatDialog,
+    private router: Router,
     public connectorApi: ConnectorApi
   ) { }
 
@@ -55,4 +57,23 @@ export class HomeRoute implements OnInit, OnDestroy {
   })
   .afterClosed()
   .subscribe((res: Connector) => res && this.connectorSrc.refresh());
+
+  remove = (connector: Connector) => this.dialog.open(ConfirmDialog, {
+    data: {
+      title: 'Delete Connector?',
+      content: `Are you sure you want to delete Connector ${connector.name}?`
+    },
+    autoFocus: false,
+    disableClose: true
+  })
+  .afterClosed()
+  .subscribe(async (result: boolean) => {
+    if (result) {
+      const res = await this.connectorApi.remove(connector);
+      res && this.connectorSrc.refresh();
+    }
+  })
+
+  view = (connector: Connector) =>
+    this.router.navigate(['connector', connector.url]);
 }

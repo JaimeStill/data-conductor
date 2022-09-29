@@ -10,22 +10,22 @@ Connector connector = new()
     Name = "DevSql AdventureWorks"
 };
 
-Statement people = new()
+Query people = new()
 {
     Name = "People Test",
     Value = "SELECT TOP (20)\n\tp.LastName as 'lastName',\n\tp.FirstName as 'firstName',\n\tp.MiddleName as 'middleName'\nFROM [AdventureWorks2019].[Person].[Person] as p\nWHERE p.LastName like '{{lastName}}%' and p.FirstName like '{{firstName}}%'\nORDER BY p.LastName, p.FirstName"
 };
 
-Statement products = new()
+Query products = new()
 {
     Name = "Product Test",
     Value = "SELECT top (20)\n\tp.Name as 'name',\n\tp.ProductNumber as 'name',\n\tp.ProductId as 'id'\nFROM [AdventureWorks2019].[Production].[Product] as p\nWHERE p.Name like '%{{search}}%'"
 };
 
-await ProcessStatement(connector, people.Interpolate("lastName:s/firstName:ri"));
-await ProcessStatement(connector, products.Interpolate("search:black"));
+await ProcessQuery(connector, people.Interpolate("lastName:s/firstName:ri"));
+await ProcessQuery(connector, products.Interpolate("search:black"));
 
-static async Task ProcessStatement(Connector connector, string query)
+static async Task ProcessQuery(Connector connector, string query)
 {
     Console.WriteLine();
     Console.WriteLine(query);

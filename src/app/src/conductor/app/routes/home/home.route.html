@@ -23,7 +23,9 @@
             <ng-container *ngIf="connectorSrc.result$ | async as query else loading">
                 <manager *ngFor="let c of query.data"
                          [data]="c"
-                         (edit)="edit($event)">
+                         (edit)="edit($event)"
+                         (remove)="remove($event)"
+                         (view)="view($event)">
                     <connector-display [connector]="c"></connector-display>
                 </manager>
             </ng-container>

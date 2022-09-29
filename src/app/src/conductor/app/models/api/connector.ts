@@ -5,13 +5,13 @@ import {
 } from '@angular/forms';
 
 import { Entity } from './base';
-import { Statement } from './statement'
+import { Query } from './query';
 
 export interface Connector extends Entity {
     database: string;
     server: string;
 
-    statements?: Statement[];
+    queries?: Query[];
 }
 
 export const GenerateConnectorForm = (connector: Connector, fb: FormBuilder): FormGroup =>
