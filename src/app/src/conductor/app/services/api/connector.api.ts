@@ -20,6 +20,14 @@ export class ConnectorApi extends EntityApi<Connector> {
         super('connector', generator, http);
     }
 
+    getAll$ = (sort: string = "Name"): Observable<Connector[]> =>
+        this.http.get<Connector[]>(`${this.api}getAll?sort=${sort}`);
+
+    getAll = (sort: string = "Name"): Promise<Connector[]> =>
+        firstValueFrom(
+            this.getAll$(sort)
+        );
+
     validateDatabase$ = (connector: Connector): Observable<boolean> =>
         this.http.post<boolean>(`${this.api}validateDatabase`, connector);
 

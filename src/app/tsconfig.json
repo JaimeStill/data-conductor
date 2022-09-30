@@ -30,5 +30,8 @@
         "name": "@angular/language-service"
       }
     ]
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true
   }
 }

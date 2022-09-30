@@ -1,5 +1,6 @@
 using Conductor.Data;
 using Conductor.Models.Entities;
+using Conductor.Models.Query;
 using Conductor.Models.Validation;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,11 @@ public class ConnectorService : EntityService<Connector>
                 && x.Server.ToLower() == connector.Server
                 && x.Database.ToLower() == connector.Database.ToLower()
             );
+
+    public async Task<List<Connector>> GetAll(string sort = "Name") =>
+        await query
+            .ApplySorting(new QueryOptions { Sort = sort })
+            .ToListAsync();
 
     public override async Task<ValidationResult> Validate(Connector entity)
     {

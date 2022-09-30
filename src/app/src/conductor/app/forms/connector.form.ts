@@ -1,9 +1,7 @@
 import {
     Component,
-    EventEmitter,
     Input,
-    OnDestroy,
-    Output
+    OnDestroy
 } from '@angular/core';
 
 import {

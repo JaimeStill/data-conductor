@@ -19,5 +19,5 @@ export const GenerateQueryForm = (query: Query, fb: FormBuilder): FormGroup =>
         id: [query?.id],
         connectorId: [query?.connectorId, Validators.required],
         name: [query?.name, Validators.required],
-        value: [query?.value, Validators.required]
+        value: [query?.value]
     })

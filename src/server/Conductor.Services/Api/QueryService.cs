@@ -60,6 +60,14 @@ public class QueryService : EntityService<Query>
         return null;
     }
 
+    public override async Task<bool> ValidateName(Query entity) =>
+        !await db.Queries
+            .AnyAsync(x =>
+                x.Id != entity.Id
+                && x.ConnectorId == entity.ConnectorId
+                && x.Name.ToLower() == entity.Name.ToLower()
+            );
+
     public override async Task<ValidationResult> Validate(Query query)
     {
         ValidationResult result = await base.Validate(query);
