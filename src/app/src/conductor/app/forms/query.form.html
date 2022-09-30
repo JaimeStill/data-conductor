@@ -12,13 +12,14 @@
             <mat-progress-bar mode="indeterminate"
                               color="accent"></mat-progress-bar>
         </ng-template>
-        <ng-container *ngIf="connectorApi.getAll() | async as connectors else loading">
+        <ng-container *ngIf="connectors$ | async as connectors else loading">
             <mat-form-field class="my4">
                 <mat-label>Connector</mat-label>
                 <mat-select formControlName="connectorId">
                     <mat-option *ngFor="let connector of connectors"
                                 [value]="connector.id">{{connector.name}}</mat-option>
                 </mat-select>
+                <mat-error *ngIf="connector?.errors?.required">Connector is required</mat-error>
             </mat-form-field>
         </ng-container>
     </section>

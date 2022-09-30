@@ -25,7 +25,8 @@ import {
 
 import {
     ConfirmDialog,
-    ConnectorDialog
+    ConnectorDialog,
+    QueryDialog
 } from '../../dialogs';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -79,13 +80,41 @@ export class ConnectorRoute implements OnInit, OnDestroy {
 
     selected = (query: Query) => this.query?.id === query.id;
 
-    add = () => { }
+    add = () => this.dialog.open(QueryDialog, {
+        data: { connectorId: this.connector?.id } as Query,
+        disableClose: true
+    })
+    .afterClosed()
+    .subscribe((res: Query) => res && this.querySrc.refresh());
 
     download = (query: Query) => this.queryApi.download(query);
 
-    fork = () => { }
+    fork = (query: Query) => this.dialog.open(QueryDialog, {
+        data: Object.assign(
+            {} as Query,
+            query,
+            { id: 0, name: '', url: '' } as Query
+        ),
+        disableClose: true
+    })
+    .afterClosed()
+    .subscribe((res: Query) => res && this.querySrc.refresh());
 
-    remove = () => { }
+    remove = (query: Query) => this.dialog.open(ConfirmDialog, {
+        data: {
+            title: 'Remove Query?',
+            content: `Are you sure you want to remove Query ${query.name}?`
+        },
+        disableClose: true,
+        autoFocus: false
+    })
+    .afterClosed()
+    .subscribe(async (result: boolean) => {
+        if (result) {
+            const res = await this.queryApi.remove(query);
+            res && this.querySrc.refresh();
+        }
+    });
 
     select = (query: Query) => this.query = this.selected(query)
         ? null

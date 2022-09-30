@@ -57,7 +57,7 @@ export class ConnectorDialog implements OnInit {
         this.storage.clear();
     }
 
-    save = async() => {
+    save = async () => {
         if (this.form?.valid) {
             const res = await this.connectorApi.save(this.form.value);
 

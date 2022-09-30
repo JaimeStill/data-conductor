@@ -3,8 +3,14 @@ import {
     EventEmitter,
     Input,
     OnDestroy,
+    OnInit,
     Output
 } from '@angular/core';
+
+import {
+    Observable,
+    Subscription
+} from 'rxjs';
 
 import {
     ApiValidator,
@@ -12,9 +18,12 @@ import {
     QueryApi
 } from '../services';
 
+import {
+    Connector,
+    Query
+} from '../models';
+
 import { FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { Query } from '../models';
 
 @Component({
     selector: 'query-form',
@@ -25,8 +34,9 @@ import { Query } from '../models';
         QueryApi
     ]
 })
-export class QueryForm implements OnDestroy {
+export class QueryForm implements OnInit, OnDestroy {
     private subs: Subscription[] = new Array<Subscription>();
+    connectors$: Observable<Connector[]>;
     form: FormGroup;
 
     get connector() { return this.form?.get('connectorId') }
@@ -64,6 +74,10 @@ export class QueryForm implements OnDestroy {
         private queryApi: QueryApi,
         public connectorApi: ConnectorApi
     ) { }
+
+    ngOnInit(): void {
+        this.connectors$ = this.connectorApi.getAll$();
+    }
 
     ngOnDestroy(): void {
         this.unsubscribe();

@@ -121,6 +121,7 @@ public class EntityService<T> : IService<T> where T : Entity
         try
         {
             var validity = await Validate(entity);
+
             if (validity.IsValid)
                 return entity.Id > 0
                     ? await Update(entity)
@@ -138,6 +139,7 @@ public class EntityService<T> : IService<T> where T : Entity
     {
         try
         {
+            ClearGraph(entity);
             db.Set<T>().Remove(entity);
             int result = await db.SaveChangesAsync();
 

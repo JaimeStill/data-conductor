@@ -75,9 +75,6 @@ public class QueryService : EntityService<Query>
         if (query.ConnectorId < 1)
             result.AddMessage("Query must be associated with a Connector");
 
-        if (string.IsNullOrEmpty(query.Value))
-            result.AddMessage("Query must have a Value");
-
         return result;
     }
 }

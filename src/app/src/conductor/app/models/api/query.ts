@@ -16,8 +16,9 @@ export interface Query extends Entity {
 
 export const GenerateQueryForm = (query: Query, fb: FormBuilder): FormGroup =>
     fb.group({
-        id: [query?.id],
-        connectorId: [query?.connectorId, Validators.required],
-        name: [query?.name, Validators.required],
-        value: [query?.value]
+        id: [query?.id ?? 0],
+        connectorId: [query?.connectorId ?? 0, Validators.required],
+        name: [query?.name ?? '', Validators.required],
+        url: [query?.url ?? ''],
+        value: [query?.value ?? '']
     })

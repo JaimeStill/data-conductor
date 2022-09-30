@@ -14,15 +14,15 @@ export interface Editor extends Entity {
 
 export const GenerateEditorForm = (editor: Editor, fb: FormBuilder) =>
     fb.group({
-        id: [editor?.id],
-        name: [editor?.name, Validators.required],
-        font: [editor?.font, Validators.required],
-        fontSize: [editor?.fontSize, [
+        id: [editor?.id ?? 0],
+        name: [editor?.name ?? '', Validators.required],
+        font: [editor?.font ?? '', Validators.required],
+        fontSize: [editor?.fontSize ?? 14, [
             Validators.required,
             Validators.min(10),
             Validators.max(24)
         ]],
-        tabSpacing: [editor?.tabSpacing, [
+        tabSpacing: [editor?.tabSpacing ?? 4, [
             Validators.required,
             Validators.min(2),
             Validators.max(8)
