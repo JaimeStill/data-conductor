@@ -40,6 +40,8 @@ export class ManagerComponent<T> implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        this.updateLayout(changes.orientation.currentValue)
+        if (!!changes.orientation?.currentValue) {
+            this.updateLayout(changes.orientation.currentValue);
+        }
     }
 }

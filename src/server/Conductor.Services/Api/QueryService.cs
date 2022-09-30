@@ -19,6 +19,14 @@ public class QueryService : EntityService<Query>
     protected override IQueryable<Query> SetGraph(DbSet<Query> data) =>
         data.Include(x => x.Connector);
 
+    protected override Func<IQueryable<Query>, string, IQueryable<Query>> Search =>
+        (values, search) =>
+            values.Where(x =>
+                x.Name.ToLower().Contains(search.ToLower())
+                || x.Connector.Server.ToLower().Contains(search.ToLower())
+                || x.Connector.Database.ToLower().Contains(search.ToLower())
+            );
+
     public async Task<QueryResult<Query>> QueryByConnector(
         int connectorId,
         QueryParams queryParams
@@ -57,10 +65,10 @@ public class QueryService : EntityService<Query>
         ValidationResult result = await base.Validate(query);
 
         if (query.ConnectorId < 1)
-            result.AddMessage("Statement must be associated with a Connector");
+            result.AddMessage("Query must be associated with a Connector");
 
         if (string.IsNullOrEmpty(query.Value))
-            result.AddMessage("Statement must have a Value");
+            result.AddMessage("Query must have a Value");
 
         return result;
     }

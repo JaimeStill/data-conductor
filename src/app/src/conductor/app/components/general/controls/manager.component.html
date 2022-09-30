@@ -6,15 +6,15 @@
     <section fxLayout="row"
              fxLayoutAlign="space-between center"
              [class]="controlOptions">
-        <button mat-icon-button
-                (click)="edit.emit(data)">
-            <mat-icon>edit</mat-icon>
-        </button>
         <button *ngIf="removable"
                 mat-icon-button
                 color="warn"
                 (click)="remove.emit(data)">
             <mat-icon>delete_outline</mat-icon>
+        </button>
+        <button mat-icon-button
+                (click)="edit.emit(data)">
+            <mat-icon>edit</mat-icon>
         </button>
         <button *ngIf="viewable"
                 mat-icon-button

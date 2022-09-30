@@ -10,13 +10,24 @@
         <section fxLayout="column"
                  fxLayoutAlign="start stretch"
                  class="card-outline-accent rounded full-height p8">
+            <p class="m4 mat-subheading-2">Connector</p>
             <manager orientation="horizontal"
                      [data]="connector"
                      [viewable]="false"
                      [removable]="false"
-                     (edit)="edit($event)">
+                     (edit)="editConnector($event)">
                 <connector-display [connector]="connector"></connector-display>
             </manager>
+            <section fxLayout="row"
+                     fxLayoutAlign="space-between center"
+                     class="m4 mt12">
+                <p class="m4 mat-subheading-2">Queries</p>
+                <button mat-stroked-button
+                        color="primary"
+                        (click)="add()">
+                    Add Query
+                </button>
+            </section>
             <async-source *ngIf="querySrc"
                           searchLabel="Search Queries"
                           emptyLabel="No Queries Available"
@@ -25,23 +36,13 @@
                           [inlineControls]="false"
                           [src]="querySrc">
                 <ng-container *ngIf="querySrc.result$ | async as query else loading">
-                    <card *ngFor="let q of query.data"
-                          layout="row"
-                          alignment="start center"
-                          options="card-outline-accent rounded p4">
-                        <p class="m4 mat-subheading-1"
-                           fxFlex>{{q.name}}</p>
-                        <section class="rounded-right">
-                            <button mat-icon-button
-                                    color="primary"
-                                    [matMenuTriggerFor]="queryMenu">
-                                <mat-icon>menu</mat-icon>
-                            </button>
-                            <mat-menu #queryMenu="matMenu">
-                                <button mat-menu-item>Link</button>
-                            </mat-menu>
-                        </section>
-                    </card>
+                    <query-card *ngFor="let q of query.data"
+                                [query]="q"
+                                [selected]="selected(q)"
+                                (download)="download($event)"
+                                (fork)="fork($event)"
+                                (remove)="remove($event)"
+                                (select)="select($event)"></query-card>
                 </ng-container>
             </async-source>
         </section>
@@ -49,9 +50,15 @@
                  fxLayoutAlign="start stretch"
                  class="card-outline-accent rounded full-height p8"
                  fxFlex>
-            <p class="m4 mat-subheading-2"
-               fxFlexAlign="center"
-               fxFlex>Editor</p>
+            <section fxLayout="column"
+                     fxLayoutAlign="start stretch"
+                     fxFlex
+                     class="p4">
+                <p class="m4 mat-subheading-2"
+                   fxFlexAlign="center">Editor</p>
+                <pre *ngIf="query"
+                     class="color-green m4"><code>{{query.value}}</code></pre>
+            </section>
             <section fxLayout="column"
                      fxLayoutAlign="start stretch"
                      class="card-outline-accent rounded p8">

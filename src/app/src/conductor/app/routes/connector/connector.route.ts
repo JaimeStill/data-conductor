@@ -23,6 +23,13 @@ import {
     Query
 } from '../../models';
 
+import {
+    ConfirmDialog,
+    ConnectorDialog
+} from '../../dialogs';
+
+import { MatDialog } from '@angular/material/dialog';
+
 @Component({
     selector: 'connector-route',
     templateUrl: 'connector.route.html',
@@ -34,10 +41,12 @@ import {
 })
 export class ConnectorRoute implements OnInit, OnDestroy {
     connector: Connector;
+    query: Query;
 
     querySrc: QuerySource<Query>;
 
     constructor(
+        private dialog: MatDialog,
         private route: ActivatedRoute,
         private router: Router,
         private connectorApi: ConnectorApi,
@@ -54,6 +63,31 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         })
     }
 
-    ngOnDestroy(): void {        
+    ngOnDestroy(): void {
+        this.querySrc.unsubscribe();
     }
+
+    editConnector = (connector: Connector) => this.dialog.open(ConnectorDialog, {
+        data: Object.assign({} as Connector, connector),
+        disableClose: true
+    })
+    .afterClosed()
+    .subscribe((res: Connector) => {
+        if (res)
+            this.router.navigate(['connector', res.url]);
+    });
+
+    selected = (query: Query) => this.query?.id === query.id;
+
+    add = () => { }
+
+    download = (query: Query) => this.queryApi.download(query);
+
+    fork = () => { }
+
+    remove = () => { }
+
+    select = (query: Query) => this.query = this.selected(query)
+        ? null
+        : query;
 }

@@ -21,13 +21,13 @@ export class QueryApi extends EntityApi<Query> {
         protected http: HttpClient,
         protected generator: QueryGeneratorService
     ) {
-        super('statement', generator, http);
+        super('query', generator, http);
     }
 
-    download = (statement: Query) => {
+    download = (query: Query) => {
         const link = document.createElement('a');
-        link.href = `data:text/plan;charset=utf-8,${encodeURIComponent(statement.value)}`;
-        link.download = `${statement.url}.sql`;
+        link.href = `data:text/plan;charset=utf-8,${encodeURIComponent(query.value)}`;
+        link.download = `${query.url}.sql`;
         link.click();
     }
 
@@ -47,19 +47,19 @@ export class QueryApi extends EntityApi<Query> {
             this.getByConnector$(connectorId)
         );
 
-    execute$ = <T>(statement: Query): Observable<T[]> =>
-        this.http.post<T[]>(`${this.api}execute`, statement);
+    execute$ = <T>(query: Query): Observable<T[]> =>
+        this.http.post<T[]>(`${this.api}execute`, query);
 
-    execute = <T>(statement: Query): Promise<T[]> =>
+    execute = <T>(query: Query): Promise<T[]> =>
         firstValueFrom(
-            this.execute$(statement)
+            this.execute$(query)
         );
 
-    executeWithProps$ = <T>(statement: Query, props: string): Observable<T[]> =>
-        this.http.post<T[]>(`${this.api}executeWithProps/${props}`, statement);
+    executeWithProps$ = <T>(query: Query, props: string): Observable<T[]> =>
+        this.http.post<T[]>(`${this.api}executeWithProps/${props}`, query);
 
-    executeWithProps = <T>(statement: Query, props: string): Promise<T[]> =>
+    executeWithProps = <T>(query: Query, props: string): Promise<T[]> =>
         firstValueFrom(
-            this.executeWithProps$(statement, props)
+            this.executeWithProps$(query, props)
         );
 }

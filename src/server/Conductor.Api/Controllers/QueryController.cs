@@ -28,13 +28,13 @@ public class QueryController : EntityController<Query>
 
     [HttpPost("[action]")]
     [Produces("application/json")]
-    public async Task<IActionResult> Execute([FromBody]Query statement) =>
-        Ok(await querySvc.Execute(statement));
+    public async Task<IActionResult> Execute([FromBody]Query query) =>
+        Ok(await querySvc.Execute(query));
 
     [HttpPost("[action]/{*props}")]
     [Produces("application/json")]
     public async Task<IActionResult> ExecuteWithProps(
-        [FromBody] Query statement,
+        [FromBody] Query query,
         [FromRoute] string props
-    ) => Ok(await querySvc.Execute(statement, props));
+    ) => Ok(await querySvc.Execute(query, props));
 }
