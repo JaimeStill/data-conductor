@@ -5,6 +5,11 @@ import {
 } from '@angular/core';
 
 import {
+    FormBuilder,
+    FormGroup
+} from '@angular/forms';
+
+import {
     ActivatedRoute,
     ParamMap,
     Router
@@ -19,6 +24,8 @@ import {
 import {
     Connector,
     Editor,
+    GenerateQueryForm,
+    IStorage,
     QuerySource,
     Query
 } from '../../models';
@@ -28,7 +35,6 @@ import {
     ConnectorDialog,
     QueryDialog
 } from '../../dialogs';
-
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -42,19 +48,26 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ConnectorRoute implements OnInit, OnDestroy {
     connector: Connector;
+    editor: Editor;
     query: Query;
-
     querySrc: QuerySource<Query>;
+
+    form: FormGroup;
+    storage: IStorage<Query>;
 
     constructor(
         private dialog: MatDialog,
+        private fb: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
         private connectorApi: ConnectorApi,
+        private editorApi: EditorApi,
         private queryApi: QueryApi
     ) { }
 
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
+        this.editor = await this.editorApi.getStoreEditor();
+
         this.route.paramMap.subscribe(async (params: ParamMap) => {
             if (params.has('url')) {
                 this.connector = await this.connectorApi.getByUrl(params.get('url'));
@@ -116,7 +129,39 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         }
     });
 
-    select = (query: Query) => this.query = this.selected(query)
-        ? null
-        : query;
+    select = (query: Query) => {
+        if (this.selected(query)) {
+            this.query = null;
+            this.form = null;
+            this.storage = null;
+        } else {
+            this.query = query;
+            this.storage = this.queryApi.generateStorage(this.query);
+
+            const value = this.storage.hasState
+                ? this.storage.get()
+                : this.query;
+
+            this.form = GenerateQueryForm(value, this.fb);
+        }
+    }
+
+    update = (query: Query) => this.storage.set(query);
+
+    clearStorage = () => {
+        this.form.reset(this.query);
+        this.storage.clear();
+    }
+
+    save = async () => {
+        if (this.form?.valid) {
+            const res = await this.queryApi.save(this.form.value);
+
+            if (res) {
+                this.query = res;
+                this.clearStorage();
+                this.querySrc.refresh();
+            }
+        }
+    }
 }

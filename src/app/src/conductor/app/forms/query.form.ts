@@ -20,6 +20,7 @@ import {
 
 import {
     Connector,
+    Editor,
     Query
 } from '../models';
 
@@ -32,7 +33,10 @@ import { FormGroup } from '@angular/forms';
         ApiValidator,
         ConnectorApi,
         QueryApi
-    ]
+    ],
+    host: {
+        'class': 'full-height'
+    }
 })
 export class QueryForm implements OnInit, OnDestroy {
     private subs: Subscription[] = new Array<Subscription>();
@@ -41,6 +45,7 @@ export class QueryForm implements OnInit, OnDestroy {
 
     get connector() { return this.form?.get('connectorId') }
     get name() { return this.form?.get('name') }
+    get value() { return this.form?.get('value') }
 
     private unsubscribe = () => this.subs.forEach(sub => sub.unsubscribe());
 
@@ -61,12 +66,23 @@ export class QueryForm implements OnInit, OnDestroy {
                 .subscribe((query: Query) => this.update.emit(query))
         );
     }
-    
-    @Input() set data(data: FormGroup) {        
+
+    @Input() set data(data: FormGroup) {
         this.form = data;
         this.register();
     }
-    
+
+
+    @Input() editor: Editor = {
+        font: 'Courier New',
+        fontSize: 14,
+        tabSpacing: 4
+    } as Editor;
+
+    @Input() padding: number = 4;
+    @Input() resize: boolean = false;
+    @Input() showEditor: boolean = false;
+
     @Output() update = new EventEmitter<Query>();
 
     constructor(
@@ -81,5 +97,21 @@ export class QueryForm implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.unsubscribe();
+    }
+
+    checkInput = (event: KeyboardEvent) => {
+        switch (event.key) {
+            case 'Tab':
+                if (event.target instanceof HTMLTextAreaElement) {
+                    event.preventDefault();
+                    const start = event.target.selectionStart;
+                    const end = event.target.selectionEnd;
+                    const value = event.target.value;
+                    const spacing = ' '.repeat(this.editor?.tabSpacing ?? 4)
+                    event.target.value = `${value.substring(0, start)}${spacing}${value.substring(end, value.length)}`;
+                    event.target.selectionStart = event.target.selectionEnd = start + spacing.length;
+                }
+                break;
+        }
     }
 }

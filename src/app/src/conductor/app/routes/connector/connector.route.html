@@ -56,8 +56,11 @@
                      class="p4">
                 <p class="m4 mat-subheading-2"
                    fxFlexAlign="center">Editor</p>
-                <pre *ngIf="query"
-                     class="color-green m4"><code>{{query.value}}</code></pre>
+                <query-form *ngIf="form && editor"
+                            [data]="form"
+                            [editor]="editor"
+                            [showEditor]="true"
+                            (update)="update($event)"></query-form>
             </section>
             <section fxLayout="column"
                      fxLayoutAlign="start stretch"

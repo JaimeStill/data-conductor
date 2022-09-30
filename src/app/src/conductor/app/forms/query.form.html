@@ -1,6 +1,7 @@
-<form [formGroup]="form">
+<form [formGroup]="form" class="full-height">
     <section fxLayout="column"
-             fxLayoutAlign="start stretch">
+             fxLayoutAlign="start stretch"
+             class="full-height">
         <mat-form-field class="my4">
             <mat-label>Name</mat-label>
             <input formControlName="name"
@@ -22,5 +23,17 @@
                 <mat-error *ngIf="connector?.errors?.required">Connector is required</mat-error>
             </mat-form-field>
         </ng-container>
+        <textarea *ngIf="showEditor"
+                  matInput
+                  formControlName="value"
+                  class="editor my4"
+                  placeholder="Query"
+                  spellcheck="false"
+                  fxFlex
+                  [ngClass]="resize ? 'resize-horizontal' : 'no-resize'"
+                  [style.font-size.px]="editor?.fontSize ?? 14"
+                  [style.font-family]="editor?.font ?? 'Courier New'"
+                  [style.padding.px]="padding"
+                  (keydown)="checkInput($event)"></textarea>
     </section>
 </form>
