@@ -32,7 +32,9 @@ namespace Conductor.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Font = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "Consolas"),
                     FontSize = table.Column<int>(type: "int", nullable: false, defaultValue: 14),
+                    Padding = table.Column<int>(type: "int", nullable: false),
                     TabSpacing = table.Column<int>(type: "int", nullable: false, defaultValue: 4),
+                    Resize = table.Column<bool>(type: "bit", nullable: false),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -49,6 +51,7 @@ namespace Conductor.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ConnectorId = table.Column<int>(type: "int", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Interpolated = table.Column<bool>(type: "bit", nullable: false),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },

@@ -20,12 +20,12 @@ public class ConnectorSeeder : Seeder<Connector, ConductorContext>
                     new()
                     {
                         Name = "Search People",
-                        Value = "SELECT TOP (20)\n\tp.LastName as 'lastName',\n\tp.FirstName as 'firstName',\n\tp.MiddleName as 'middleName'\nFROM [AdventureWorks2019].[Person].[Person] as p\nWHERE p.LastName like '{{lastName}}%' and p.FirstName like '{{firstName}}%'\nORDER BY p.LastName, p.FirstName"
+                        Value = "SELECT TOP (20)\n    p.LastName as 'lastName',\n    p.FirstName as 'firstName',\n    p.MiddleName as 'middleName'\nFROM [AdventureWorks2019].[Person].[Person] as p\nWHERE p.LastName like '{{lastName}}%' and p.FirstName like '{{firstName}}%'\nORDER BY p.LastName, p.FirstName"
                     },
                     new()
                     {
                         Name = "Search Products",
-                        Value = "SELECT top (20)\n\tp.Name as 'name',\n\tp.ProductNumber as 'name',\n\tp.ProductId as 'id'\nFROM [AdventureWorks2019].[Production].[Product] as p\nWHERE p.Name like '%{{search}}%'"
+                        Value = "SELECT top (20)\n    p.Name as 'name',\n    p.ProductNumber as 'name',\n    p.ProductId as 'id'\nFROM [AdventureWorks2019].[Production].[Product] as p\nWHERE p.Name like '%{{search}}%'"
                     }
                 }
             }

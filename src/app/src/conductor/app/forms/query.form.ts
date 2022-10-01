@@ -76,11 +76,11 @@ export class QueryForm implements OnInit, OnDestroy {
     @Input() editor: Editor = {
         font: 'Courier New',
         fontSize: 14,
-        tabSpacing: 4
+        padding: 4,
+        tabSpacing: 4,
+        resize: false
     } as Editor;
 
-    @Input() padding: number = 4;
-    @Input() resize: boolean = false;
     @Input() showEditor: boolean = false;
 
     @Output() update = new EventEmitter<Query>();
@@ -100,18 +100,19 @@ export class QueryForm implements OnInit, OnDestroy {
     }
 
     checkInput = (event: KeyboardEvent) => {
-        switch (event.key) {
-            case 'Tab':
-                if (event.target instanceof HTMLTextAreaElement) {
-                    event.preventDefault();
-                    const start = event.target.selectionStart;
-                    const end = event.target.selectionEnd;
-                    const value = event.target.value;
-                    const spacing = ' '.repeat(this.editor?.tabSpacing ?? 4)
-                    event.target.value = `${value.substring(0, start)}${spacing}${value.substring(end, value.length)}`;
-                    event.target.selectionStart = event.target.selectionEnd = start + spacing.length;
-                }
-                break;
+        if (event.target instanceof HTMLTextAreaElement) {
+            if (event.key === 'Tab') {
+                event.preventDefault();
+
+                const start = event.target.selectionStart;
+                const end = event.target.selectionEnd;
+                const value = event.target.value;
+                const spacing = ' '.repeat(this.editor?.tabSpacing ?? 4);
+
+                event.target.value = `${value.substring(0, start)}${spacing}${value.substring(end, value.length)}`;
+                event.target.selectionStart = event.target.selectionEnd = start + spacing.length;
+                this.value.setValue(event.target.value);
+            }
         }
     }
 }

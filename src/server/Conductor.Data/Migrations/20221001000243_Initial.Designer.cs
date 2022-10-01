@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Conductor.Data.Migrations
 {
     [DbContext(typeof(ConductorContext))]
-    [Migration("20220929230413_Initial")]
+    [Migration("20221001000243_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,6 +73,12 @@ namespace Conductor.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Padding")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Resize")
+                        .HasColumnType("bit");
+
                     b.Property<int>("TabSpacing")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -96,6 +102,9 @@ namespace Conductor.Data.Migrations
 
                     b.Property<int>("ConnectorId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Interpolated")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");

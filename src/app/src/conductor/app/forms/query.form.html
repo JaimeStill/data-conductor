@@ -30,10 +30,10 @@
                   placeholder="Query"
                   spellcheck="false"
                   fxFlex
-                  [ngClass]="resize ? 'resize-horizontal' : 'no-resize'"
+                  [ngClass]="editor.resize ? 'resize-horizontal' : 'no-resize'"
                   [style.font-size.px]="editor?.fontSize ?? 14"
                   [style.font-family]="editor?.font ?? 'Courier New'"
-                  [style.padding.px]="padding"
+                  [style.padding.px]="editor.padding"
                   (keydown)="checkInput($event)"></textarea>
     </section>
 </form>
