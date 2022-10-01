@@ -51,7 +51,10 @@ export class ConnectorRoute implements OnInit, OnDestroy {
     editor: Editor;
     query: Query;
     querySrc: QuerySource<Query>;
+    results: any[];
+    resultsExpanded: boolean = false;
 
+    interpolation: string = '';
     form: FormGroup;
     storage: IStorage<Query>;
 
@@ -80,6 +83,8 @@ export class ConnectorRoute implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.querySrc.unsubscribe();
     }
+
+    toggleResultsExpanded = () => this.resultsExpanded = !this.resultsExpanded;
 
     editConnector = (connector: Connector) => this.dialog.open(ConnectorDialog, {
         data: Object.assign({} as Connector, connector),
@@ -163,5 +168,19 @@ export class ConnectorRoute implements OnInit, OnDestroy {
                 this.querySrc.refresh();
             }
         }
+    }
+
+    clearResults = () => {
+        this.results = null;
+        this.resultsExpanded = false;
+    }
+
+    execute = async () => {
+        this.results = this.form.get('interpolated').value
+            ? await this.queryApi.executeWithProps(this.form.value, this.interpolation)
+            : await this.queryApi.execute(this.form.value);
+
+        if (this.results?.length > 0)
+            this.resultsExpanded = true;
     }
 }

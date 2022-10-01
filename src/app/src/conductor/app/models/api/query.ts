@@ -10,6 +10,7 @@ import { Connector } from './connector';
 export interface Query extends Entity {
     connectorId: number;
     value: string;
+    interpolated: boolean;
 
     connector?: Connector;
 }
@@ -20,5 +21,6 @@ export const GenerateQueryForm = (query: Query, fb: FormBuilder): FormGroup =>
         connectorId: [query?.connectorId ?? 0, Validators.required],
         name: [query?.name ?? '', Validators.required],
         url: [query?.url ?? ''],
-        value: [query?.value ?? '']
+        value: [query?.value ?? ''],
+        interpolated: [query?.interpolated]
     })

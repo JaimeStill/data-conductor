@@ -55,8 +55,19 @@
                      fxLayoutAlign="start stretch"
                      fxFlex>
                 <mat-toolbar class="rounded"
-                             fxLayoutAlign="end center"
+                             fxLayoutAlign="start center"
                              fxLayoutGap="8px">
+                    <mat-form-field fxFlex>
+                        <mat-label>Interpolation</mat-label>
+                        <input matInput
+                               [disabled]="!(query.interpolated)"
+                               [(ngModel)]="interpolation">
+                    </mat-form-field>
+                    <button mat-stroked-button
+                            [disabled]="form.invalid || (query.interpolated && !(interpolation?.length > 0))"
+                            (click)="execute()">
+                        Execute Query
+                    </button>
                     <button mat-stroked-button
                             color="primary"
                             [disabled]="!(storage.hasState) || form.invalid"
@@ -76,12 +87,32 @@
                             [showEditor]="true"
                             (update)="update($event)"></query-form>
             </section>
-            <section fxLayout="column"
-                     fxLayoutAlign="start stretch"
-                     class="card-outline-accent rounded p8 m8">
-                <p class="m4 mat-subheading-2"
-                   fxFlexAlign="center">Results</p>
-            </section>
+            <ng-container *ngIf="query">
+                <mat-toolbar class="rounded"
+                             fxLayoutGap="8px">
+                    <span fxFlex>Results</span>
+                    <button mat-stroked-button
+                            color="primary"
+                            [disabled]="results?.length < 1"
+                            (click)="clearResults()">
+                        Clear Results
+                    </button>
+                    <button mat-icon-button
+                            (click)="toggleResultsExpanded()">
+                        <mat-icon>{{resultsExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}}</mat-icon>
+                    </button>
+                </mat-toolbar>
+                <ng-container *ngIf="resultsExpanded">
+                    <section *ngIf="results?.length > 0"
+                             class="p8 overflow m4"
+                             [style.max-height.px]="360">
+                        <pre *ngFor="let result of results"
+                             class="pre-wrap"><code>{{result | json}}</code></pre>
+                    </section>
+                    <p *ngIf="!(results?.length > 0)"
+                       class="m8 mat-subheading-2">No Results Available</p>
+                </ng-container>
+            </ng-container>
         </section>
     </section>
 </ng-container>
