@@ -1,0 +1,118 @@
+<ng-template #loading>
+    <mat-progress-bar mode="indeterminate"
+                      color="accent"></mat-progress-bar>
+</ng-template>
+<ng-container *ngIf="connector else loading">
+    <section fxLayout="row | wrap"
+             fxLayoutAlign="start start"
+             fxLayoutGap="8px"
+             class="full-height p8">
+        <section fxLayout="column"
+                 fxLayoutAlign="start stretch"
+                 class="card-outline-accent rounded full-height p8">
+            <p class="m4 mat-subheading-2">Connector</p>
+            <manager orientation="horizontal"
+                     [data]="connector"
+                     [viewable]="false"
+                     [removable]="false"
+                     (edit)="editConnector($event)">
+                <connector-display [connector]="connector"></connector-display>
+            </manager>
+            <section fxLayout="row"
+                     fxLayoutAlign="space-between center"
+                     class="m4 mt12">
+                <p class="m4 mat-subheading-2">Queries</p>
+                <button mat-stroked-button
+                        color="primary"
+                        (click)="add()">
+                    Add Query
+                </button>
+            </section>
+            <async-source *ngIf="querySrc"
+                          searchLabel="Search Queries"
+                          emptyLabel="No Queries Available"
+                          layout="column"
+                          alignment="start stretch"
+                          [inlineControls]="false"
+                          [src]="querySrc">
+                <ng-container *ngIf="querySrc.result$ | async as query else loading">
+                    <query-card *ngFor="let q of query.data"
+                                [query]="q"
+                                [selected]="selected(q)"
+                                (download)="download($event)"
+                                (fork)="fork($event)"
+                                (remove)="remove($event)"
+                                (select)="select($event)"></query-card>
+                </ng-container>
+            </async-source>
+        </section>
+        <section fxLayout="column"
+                 fxLayoutAlign="start stretch"
+                 class="card-outline-accent rounded full-height"
+                 fxFlex>
+            <section *ngIf="form && editor && storage"
+                     fxLayout="column"
+                     fxLayoutAlign="start stretch"
+                     fxFlex>
+                <mat-toolbar class="rounded"
+                             fxLayoutAlign="start center"
+                             fxLayoutGap="8px">
+                    <mat-form-field fxFlex>
+                        <mat-label>Interpolation</mat-label>
+                        <input matInput
+                               [disabled]="!(query.interpolated)"
+                               [(ngModel)]="interpolation">
+                    </mat-form-field>
+                    <button mat-stroked-button
+                            [disabled]="form.invalid || (query.interpolated && !(interpolation?.length > 0))"
+                            (click)="execute()">
+                        Execute Query
+                    </button>
+                    <button mat-stroked-button
+                            color="primary"
+                            [disabled]="!(storage.hasState) || form.invalid"
+                            (click)="save()">
+                        Save Query
+                    </button>
+                    <button mat-stroked-button
+                            class="color-blue"
+                            [disabled]="!(storage.hasState)"
+                            (click)="clearStorage()">
+                        Clear Cache
+                    </button>
+                </mat-toolbar>
+                <query-form class="m8"
+                            [data]="form"
+                            [editor]="editor"
+                            [showEditor]="true"
+                            (update)="update($event)"></query-form>
+            </section>
+            <ng-container *ngIf="query">
+                <mat-toolbar class="rounded"
+                             fxLayoutGap="8px">
+                    <span fxFlex>Results</span>
+                    <button mat-stroked-button
+                            color="primary"
+                            [disabled]="results?.length < 1"
+                            (click)="clearResults()">
+                        Clear Results
+                    </button>
+                    <button mat-icon-button
+                            (click)="toggleResultsExpanded()">
+                        <mat-icon>{{resultsExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}}</mat-icon>
+                    </button>
+                </mat-toolbar>
+                <ng-container *ngIf="resultsExpanded">
+                    <section *ngIf="results?.length > 0"
+                             class="p8 overflow m4"
+                             [style.max-height.px]="360">
+                        <pre *ngFor="let result of results"
+                             class="pre-wrap"><code>{{result | json}}</code></pre>
+                    </section>
+                    <p *ngIf="!(results?.length > 0)"
+                       class="m8 mat-subheading-2">No Results Available</p>
+                </ng-container>
+            </ng-container>
+        </section>
+    </section>
+</ng-container>

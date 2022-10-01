@@ -1,0 +1,26 @@
+<div class="mat-typography">
+    <h2 mat-dialog-title>
+        <span *ngIf="connector?.id > 0">Update Connector</span>
+        <span *ngIf="!(connector?.id > 0)">Add Connector</span>
+    </h2>
+    <mat-dialog-content>
+        <connector-form [data]="form"></connector-form>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-stroked-button
+                color="primary"
+                [disabled]="!(storage.hasState) || form.invalid"
+                (click)="save()">
+            Save Connector
+        </button>
+        <button mat-stroked-button
+                class="color-blue"
+                [disabled]="!(storage.hasState)"
+                (click)="clearStorage()">
+            Clear Cache
+        </button>
+        <button mat-stroked-button
+                color="warn"
+                mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</div>

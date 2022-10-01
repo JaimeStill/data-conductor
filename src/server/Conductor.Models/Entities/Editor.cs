@@ -3,5 +3,7 @@ public class Editor : Entity
 {
     public string Font { get; set; }
     public int FontSize { get; set; }
+    public int Padding { get; set; }
     public int TabSpacing { get; set; }
+    public bool Resize { get; set; }
 }

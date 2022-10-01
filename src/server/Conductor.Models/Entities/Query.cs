@@ -1,8 +1,11 @@
+using System.Text.RegularExpressions;
+
 namespace Conductor.Models.Entities;
-public class Statement : Entity
+public class Query : Entity
 {
     public int ConnectorId { get; set; }
     public string Value { get; set; }
+    public bool Interpolated { get; set; }
 
     public Connector Connector { get; set; }
 
@@ -29,4 +32,13 @@ public class Statement : Entity
             $"{{{{{prop.Split(':')[0]}}}}}",
             prop.Split(':')[1]
         );
+
+    static bool IsInterpolated(string value) =>
+        Regex.IsMatch(value, @"{{.*}}");
+
+    public override void Complete()
+    {
+        Interpolated = IsInterpolated(Value);
+        base.Complete();
+    }
 }

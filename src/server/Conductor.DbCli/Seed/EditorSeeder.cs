@@ -15,7 +15,9 @@ public class EditorSeeder : Seeder<Editor, ConductorContext>
                 Font = "Courier New",
                 FontSize = 14,
                 Name = "Default",
-                TabSpacing = 4
+                Padding = 4,
+                TabSpacing = 4,
+                Resize = false
             }
         };
 

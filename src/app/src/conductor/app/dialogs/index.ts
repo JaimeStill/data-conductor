@@ -1,7 +1,10 @@
 import { ConfirmDialog } from './confirm';
+import { EditorDialogs } from './editors';
 
 export const Dialogs = [
-  ConfirmDialog
+  ConfirmDialog,
+  ...EditorDialogs
 ];
 
 export * from './confirm';
+export * from './editors';

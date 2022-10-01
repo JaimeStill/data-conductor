@@ -1,0 +1,39 @@
+<form [formGroup]="form" class="full-height">
+    <section fxLayout="column"
+             fxLayoutAlign="start stretch"
+             class="full-height">
+        <mat-form-field class="my4">
+            <mat-label>Name</mat-label>
+            <input formControlName="name"
+                   matInput>
+            <mat-error *ngIf="name?.errors?.required">Name is required</mat-error>
+            <mat-error *ngIf="name?.errors?.api">Name is already in use</mat-error>
+        </mat-form-field>
+        <ng-template #loading>
+            <mat-progress-bar mode="indeterminate"
+                              color="accent"></mat-progress-bar>
+        </ng-template>
+        <ng-container *ngIf="connectors$ | async as connectors else loading">
+            <mat-form-field class="my4">
+                <mat-label>Connector</mat-label>
+                <mat-select formControlName="connectorId">
+                    <mat-option *ngFor="let connector of connectors"
+                                [value]="connector.id">{{connector.name}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="connector?.errors?.required">Connector is required</mat-error>
+            </mat-form-field>
+        </ng-container>
+        <textarea *ngIf="showEditor"
+                  matInput
+                  formControlName="value"
+                  class="editor my4"
+                  placeholder="Query"
+                  spellcheck="false"
+                  fxFlex
+                  [ngClass]="editor.resize ? 'resize-horizontal' : 'no-resize'"
+                  [style.font-size.px]="editor?.fontSize ?? 14"
+                  [style.font-family]="editor?.font ?? 'Courier New'"
+                  [style.padding.px]="editor.padding"
+                  (keydown)="checkInput($event)"></textarea>
+    </section>
+</form>

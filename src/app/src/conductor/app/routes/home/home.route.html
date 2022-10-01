@@ -1,1 +1,34 @@
-<p class="mat-title m8">Home</p>
+<ng-template #loading>
+    <mat-progress-bar mode="indeterminate"
+                      color="accent"></mat-progress-bar>
+</ng-template>
+<section fxLayout="column"
+         fxLayoutAlign="start stretch">
+    <section fxLayout="row"
+             fxLayoutAlign="start center">
+        <p class="m8 mat-title"
+           fxFlex>Connectors</p>
+        <button mat-stroked-button
+                class="m8"
+                color="primary"
+                (click)="add()">
+            Add Connector
+        </button>
+    </section>
+    <p class="m8">Defines a configuration for connecting with a database.</p>
+    <ng-container *ngIf="connectorSrc else loading">
+        <async-source searchLabel="Search Connectors"
+                      emptyLabel="No Connectors Available"
+                      [src]="connectorSrc">
+            <ng-container *ngIf="connectorSrc.result$ | async as query else loading">
+                <manager *ngFor="let c of query.data"
+                         [data]="c"
+                         (edit)="edit($event)"
+                         (remove)="remove($event)"
+                         (view)="view($event)">
+                    <connector-display [connector]="c"></connector-display>
+                </manager>
+            </ng-container>
+        </async-source>
+    </ng-container>
+</section>

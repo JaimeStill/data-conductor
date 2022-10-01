@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 import { Subscription } from 'rxjs';
-import { CoreService } from '../../services';
+import { CoreService } from '../../../services';
 
 @Component({
     selector: 'searchbar',

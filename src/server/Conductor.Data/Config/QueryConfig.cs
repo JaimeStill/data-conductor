@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Conductor.Data.Config;
-public class StatementConfig : IEntityTypeConfiguration<Statement>
+public class QueryConfig : IEntityTypeConfiguration<Query>
 {
-    public void Configure(EntityTypeBuilder<Statement> builder)
+    public void Configure(EntityTypeBuilder<Query> builder)
     {
         builder
             .HasOne(x => x.Connector)
-            .WithMany(x => x.Statements)
+            .WithMany(x => x.Queries)
             .HasForeignKey(x => x.ConnectorId);
     }
 }

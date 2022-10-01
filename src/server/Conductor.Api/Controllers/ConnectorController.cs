@@ -13,7 +13,11 @@ public class ConnectorController : EntityController<Connector>
         connectorSvc = svc;
     }
 
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetAll([FromQuery] string sort = "Name") =>
+        Ok(await connectorSvc.GetAll(sort));
+
     [HttpPost("[action]")]
-    public async Task<IActionResult> ValidateDatabase([FromBody]Connector connector) =>
+    public async Task<IActionResult> ValidateDatabase([FromBody] Connector connector) =>
         Ok(await connectorSvc.ValidateDatabase(connector));
 }

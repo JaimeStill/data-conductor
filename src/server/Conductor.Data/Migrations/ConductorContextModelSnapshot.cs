@@ -71,6 +71,12 @@ namespace Conductor.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Padding")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Resize")
+                        .HasColumnType("bit");
+
                     b.Property<int>("TabSpacing")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
@@ -84,7 +90,7 @@ namespace Conductor.Data.Migrations
                     b.ToTable("Editor", (string)null);
                 });
 
-            modelBuilder.Entity("Conductor.Models.Entities.Statement", b =>
+            modelBuilder.Entity("Conductor.Models.Entities.Query", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -94,6 +100,9 @@ namespace Conductor.Data.Migrations
 
                     b.Property<int>("ConnectorId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Interpolated")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -108,13 +117,13 @@ namespace Conductor.Data.Migrations
 
                     b.HasIndex("ConnectorId");
 
-                    b.ToTable("Statement", (string)null);
+                    b.ToTable("Query", (string)null);
                 });
 
-            modelBuilder.Entity("Conductor.Models.Entities.Statement", b =>
+            modelBuilder.Entity("Conductor.Models.Entities.Query", b =>
                 {
                     b.HasOne("Conductor.Models.Entities.Connector", "Connector")
-                        .WithMany("Statements")
+                        .WithMany("Queries")
                         .HasForeignKey("ConnectorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -124,7 +133,7 @@ namespace Conductor.Data.Migrations
 
             modelBuilder.Entity("Conductor.Models.Entities.Connector", b =>
                 {
-                    b.Navigation("Statements");
+                    b.Navigation("Queries");
                 });
 #pragma warning restore 612, 618
         }

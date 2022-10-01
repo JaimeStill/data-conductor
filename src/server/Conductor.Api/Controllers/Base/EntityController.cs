@@ -37,7 +37,7 @@ public abstract class EntityController<T> : ControllerBase where T : Entity
     public virtual async Task<IActionResult> Save([FromBody]T entity) =>
         Ok(await svc.Save(entity));
 
-    [HttpPost("[action]")]
+    [HttpDelete("[action]")]
     public virtual async Task<IActionResult> Remove([FromBody]T entity) =>
         Ok(await svc.Remove(entity));
 }

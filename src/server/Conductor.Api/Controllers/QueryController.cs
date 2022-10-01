@@ -6,35 +6,35 @@ using Microsoft.AspNetCore.Mvc;
 namespace Conductor.Api.Controllers;
 
 [Route("api/[controller]")]
-public class StatementController : EntityController<Statement>
+public class QueryController : EntityController<Query>
 {
-    readonly StatementService statementSvc;
-    public StatementController(StatementService svc) : base(svc)
+    readonly QueryService querySvc;
+    public QueryController(QueryService svc) : base(svc)
     {
-        statementSvc = svc;
+        querySvc = svc;
     }
 
     [HttpGet("[action]/{connectorId:int}")]
     public async Task<IActionResult> QueryByConnector(
         [FromRoute] int connectorId,
         [FromQuery] QueryParams queryParams
-    ) => Ok(await statementSvc.QueryByConnector(connectorId, queryParams));
+    ) => Ok(await querySvc.QueryByConnector(connectorId, queryParams));
 
     [HttpGet("[action]/{connectorId:int}")]
     public async Task<IActionResult> GetByConnector(
         [FromRoute] int connectorId,
         [FromQuery] string sort = "Name"
-    ) => Ok(await statementSvc.GetByConnector(connectorId, sort));
+    ) => Ok(await querySvc.GetByConnector(connectorId, sort));
 
     [HttpPost("[action]")]
     [Produces("application/json")]
-    public async Task<IActionResult> Execute([FromBody]Statement statement) =>
-        Ok(await statementSvc.Execute(statement));
+    public async Task<IActionResult> Execute([FromBody]Query query) =>
+        Ok(await querySvc.Execute(query));
 
     [HttpPost("[action]/{*props}")]
     [Produces("application/json")]
     public async Task<IActionResult> ExecuteWithProps(
-        [FromBody] Statement statement,
+        [FromBody] Query query,
         [FromRoute] string props
-    ) => Ok(await statementSvc.Execute(statement, props));
+    ) => Ok(await querySvc.Execute(query, props));
 }

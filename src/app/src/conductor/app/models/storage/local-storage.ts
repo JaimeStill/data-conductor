@@ -3,7 +3,7 @@ import { IStorage } from './istorage';
 export class LocalStorage<T> implements IStorage<T> {
     private key: string;
 
-    hasState = false;
+    hasState = false;    
 
     constructor(
         key: string

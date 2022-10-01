@@ -85,6 +85,6 @@ export abstract class EntityApi<T extends Entity> {
 
     remove = (entity: T): Promise<number> =>
         firstValueFrom(
-            this.http.post<number>(`${this.api}remove`, entity)
+            this.http.delete<number>(`${this.api}remove`, { body: entity })
         );
 }

@@ -3,7 +3,7 @@ import {
     Input
 } from '@angular/core';
 
-import { QuerySource } from '../../models';
+import { QuerySource } from '../../../models';
 
 @Component({
     selector: 'async-source',

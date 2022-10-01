@@ -1,0 +1,32 @@
+<card layout="column"
+      alignment="start stretch"
+      width="auto"
+      [options]="options">
+    <section fxLayout="row"
+             fxLayoutAlign="space-between center"
+             class="p8 cursor-pointer"
+             (click)="select.emit(query)">
+        <p class="m4 mat-subheading-2">{{query?.name}}</p>
+        <mat-icon class="m4"
+                  [ngClass]="selected ? 'color-primary' : 'color-default'">{{selectedIcon}}</mat-icon>
+    </section>
+    <section fxLayout="row"
+             fxLayoutAlign="space-between center"
+             class="background-default rounded-bottom p4">
+        <button mat-icon-button
+                color="warn"
+                (click)="remove.emit(query)">
+            <mat-icon>delete_outlined</mat-icon>
+        </button>
+        <button mat-icon-button
+                class="color-blue"
+                (click)="fork.emit(query)">
+            <mat-icon>fork_right</mat-icon>
+        </button>
+        <button mat-icon-button
+                color="primary"
+                (click)="download.emit(query)">
+            <mat-icon>save_alt</mat-icon>
+        </button>
+    </section>
+</card>
