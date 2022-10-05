@@ -1,7 +1,6 @@
 ﻿using System.Text.Json.Nodes;
 using Conductor.Models.Entities;
 using Conductor.Services.Sql;
-// See https://aka.ms/new-console-template for more information
 
 Connector connector = new()
 {

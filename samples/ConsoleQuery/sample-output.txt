@@ -1,0 +1,52 @@
+
+SELECT TOP (20)
+	p.LastName as 'lastName',
+	p.FirstName as 'firstName',
+	p.MiddleName as 'middleName'
+FROM [AdventureWorks2019].[Person].[Person] as p
+WHERE p.LastName like 's%' and p.FirstName like 'ri%'
+ORDER BY p.LastName, p.FirstName
+
+{"lastName":"Sanchez","firstName":"Richard","middleName":"L"}
+{"lastName":"Sanchez","firstName":"Riley","middleName":"J"}
+{"lastName":"Sanders","firstName":"Richard","middleName":"D"}
+{"lastName":"Sanz","firstName":"Ricky","middleName":{}}
+{"lastName":"Serrano","firstName":"Ricky","middleName":{}}
+{"lastName":"Shan","firstName":"Ricardo","middleName":{}}
+{"lastName":"Sharma","firstName":"Ricardo","middleName":{}}
+{"lastName":"She","firstName":"Ricardo","middleName":"A"}
+{"lastName":"Shen","firstName":"Ricardo","middleName":{}}
+{"lastName":"Simmons","firstName":"Richard","middleName":{}}
+{"lastName":"Simmons","firstName":"Riley","middleName":"R"}
+{"lastName":"Smith","firstName":"Richard","middleName":{}}
+{"lastName":"Stewart","firstName":"Riley","middleName":"L"}
+{"lastName":"Stone","firstName":"Richard","middleName":"D"}
+{"lastName":"Suarez","firstName":"Ricky","middleName":{}}
+
+SELECT top (20)
+	p.Name as 'name',
+	p.ProductNumber as 'name',
+	p.ProductId as 'id'
+FROM [AdventureWorks2019].[Production].[Product] as p
+WHERE p.Name like '%black%'
+
+{"name":"Paint - Black","name_1":"PA-187B","id":492}
+{"name":"HL Road Frame - Black, 58","name_1":"FR-R92B-58","id":680}
+{"name":"Sport-100 Helmet, Black","name_1":"HL-U509","id":708}
+{"name":"LL Road Frame - Black, 58","name_1":"FR-R38B-58","id":722}
+{"name":"LL Road Frame - Black, 60","name_1":"FR-R38B-60","id":723}
+{"name":"LL Road Frame - Black, 62","name_1":"FR-R38B-62","id":724}
+{"name":"LL Road Frame - Black, 44","name_1":"FR-R38B-44","id":736}
+{"name":"LL Road Frame - Black, 48","name_1":"FR-R38B-48","id":737}
+{"name":"LL Road Frame - Black, 52","name_1":"FR-R38B-52","id":738}
+{"name":"HL Mountain Frame - Black, 42","name_1":"FR-M94B-42","id":743}
+{"name":"HL Mountain Frame - Black, 44","name_1":"FR-M94B-44","id":744}
+{"name":"HL Mountain Frame - Black, 48","name_1":"FR-M94B-48","id":745}
+{"name":"HL Mountain Frame - Black, 46","name_1":"FR-M94B-46","id":746}
+{"name":"HL Mountain Frame - Black, 38","name_1":"FR-M94B-38","id":747}
+{"name":"Road-650 Black, 58","name_1":"BK-R50B-58","id":765}
+{"name":"Road-650 Black, 60","name_1":"BK-R50B-60","id":766}
+{"name":"Road-650 Black, 62","name_1":"BK-R50B-62","id":767}
+{"name":"Road-650 Black, 44","name_1":"BK-R50B-44","id":768}
+{"name":"Road-650 Black, 48","name_1":"BK-R50B-48","id":769}
+{"name":"Road-650 Black, 52","name_1":"BK-R50B-52","id":770}

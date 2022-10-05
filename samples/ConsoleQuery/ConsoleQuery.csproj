@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Conductor.Services\Conductor.Services.csproj" />
-    <ProjectReference Include="..\Conductor.Models\Conductor.Models.csproj" />
+    <ProjectReference Include="..\..\src\server\Conductor.Models\Conductor.Models.csproj" />
+    <ProjectReference Include="..\..\src\server\Conductor.Services\Conductor.Services.csproj" />
   </ItemGroup>
 
 </Project>
