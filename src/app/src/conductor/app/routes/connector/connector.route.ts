@@ -33,6 +33,7 @@ import {
 import {
     ConfirmDialog,
     ConnectorDialog,
+    EditorDialog,
     QueryDialog
 } from '../../dialogs';
 
@@ -91,6 +92,15 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         this.editor = e;
         this.editorApi.updateStoreEditor(e);
     }
+
+    editorSettings = () => this.dialog.open(EditorDialog, {
+        disableClose: true
+    })
+    .afterClosed()
+    .subscribe(async () => {
+        this.editor = await this.editorApi.getStoreEditor();
+        this.editorApi.getAll();
+    });
 
     editConnector = (connector: Connector) => this.dialog.open(ConnectorDialog, {
         data: Object.assign({} as Connector, connector),

@@ -3,8 +3,8 @@
       width="auto"
       options="background-card rounded card-outline-divider">
     <ng-content></ng-content>
-    <section fxLayout="row"
-             fxLayoutAlign="space-between center"
+    <section [fxLayout]="controlLayout"
+             [fxLayoutAlign]="controlAlignment"
              [class]="controlOptions">
         <button *ngIf="removable"
                 mat-icon-button

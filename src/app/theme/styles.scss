@@ -103,9 +103,9 @@
     }
   }
 
-  button.mat-stroked-button:disabled,
+  button.mat-button:disabled,
   button.mat-icon-button:disabled,
-  a.mat-stroked-button:disabled {
+  a.mat-button:disabled {
     border-color: $disabled-button;
     color: $disabled-text!important;
   }

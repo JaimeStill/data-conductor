@@ -2,6 +2,10 @@
 
 > Still a work in progress
 
+Expose legacy SQL data over HTTP as JSON with custom property structure.
+
+![image](https://user-images.githubusercontent.com/14102723/194438092-85de510e-ad10-46b4-8f43-cce6ac01b44a.png)
+
 **App Demo**
 
 https://user-images.githubusercontent.com/14102723/193418612-ec774bd7-6b15-451a-a658-e4e276e5bfc9.mp4

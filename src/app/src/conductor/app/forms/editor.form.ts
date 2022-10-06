@@ -4,6 +4,7 @@ import {
     Input,
     OnChanges,
     OnDestroy,
+    OnInit,
     Output,
     SimpleChanges
 } from '@angular/core';
@@ -25,17 +26,18 @@ import { Editor } from '../models';
         EditorApi
     ]
 })
-export class EditorForm implements OnChanges, OnDestroy {
+export class EditorForm implements OnChanges, OnInit, OnDestroy {
     private subs: Subscription[] = new Array<Subscription>();
+
     @Input() form: FormGroup;
-    @Output() preview = new EventEmitter<Editor>();
+    @Output() update = new EventEmitter<{ editor: Editor, store: boolean }>();
 
     get color() { return this.form?.get('color') }
     get name() { return this.form?.get('name') }
     get font() { return this.form?.get('font') }
     get fontSize() { return this.form?.get('fontSize') }
     get padding() { return this.form?.get('padding') }
-    get tabSpacing() { return this.tabSpacing?.get('tabSpacing') }
+    get tabSpacing() { return this.form?.get('tabSpacing') }
 
     private unsubscribe = () => this.subs?.forEach(sub => sub?.unsubscribe());
 
@@ -54,9 +56,11 @@ export class EditorForm implements OnChanges, OnDestroy {
             this.form
                 .valueChanges
                 .subscribe({
-                    next: (editor: Editor) => this.preview.emit(editor)
+                    next: (editor: Editor) => this.update.emit({ editor: editor, store: true })
                 })
         )
+
+        this.update.emit({ editor: this.form?.value, store: false });
     }
 
     constructor(
@@ -65,8 +69,12 @@ export class EditorForm implements OnChanges, OnDestroy {
     ) { }
 
     async ngOnChanges(changes: SimpleChanges): Promise<void> {
-        if (changes.form)
+        if (changes.form && !changes.form.isFirstChange())
             await this.init();
+    }
+
+    async ngOnInit(): Promise<void> {
+        await this.init();
     }
 
     ngOnDestroy(): void {

@@ -20,6 +20,14 @@ export class ConnectorApi extends EntityApi<Connector> {
         super('connector', generator, http);
     }
 
+    override init = () => Object.assign(
+        <Connector>{
+            database: '',
+            server: ''
+        },
+        this.base()
+    );
+
     getAll$ = (sort: string = "Name"): Observable<Connector[]> =>
         this.http.get<Connector[]>(`${this.api}getAll?sort=${sort}`);
 

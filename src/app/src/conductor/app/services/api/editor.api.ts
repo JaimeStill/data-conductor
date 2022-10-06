@@ -32,6 +32,18 @@ export class EditorApi extends EntityApi<Editor> {
         this.store = new LocalStorage(`conductor-editor-config`);
     }
 
+    override init = () => Object.assign(
+        <Editor>{
+            color: 'inherit',
+            font: 'Courier New',
+            fontSize: 14,
+            padding: 4,
+            resize: false,
+            tabSpacing: 4
+        },
+        this.base()
+    );
+
     getAll$ = this.http.get<Editor[]>(`${this.api}getAll`);
 
     getAll = () => 

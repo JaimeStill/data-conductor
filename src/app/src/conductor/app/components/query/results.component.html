@@ -1,13 +1,13 @@
 <mat-toolbar class="rounded"
              fxLayoutGap="8px">
     <span fxFlex>Results</span>
-    <button mat-stroked-button
+    <button mat-button
             color="primary"
             [disabled]="disabled()"
             (click)="copy()">
         Copy Results
     </button>
-    <button mat-stroked-button
+    <button mat-button
             color="warn"
             [disabled]="disabled()"
             (click)="clear.emit()">
