@@ -1,0 +1,42 @@
+<section fxLayout="column"
+         fxLayoutAlign="start stretch"
+         class="card-outline-accent rounded full-height p8">
+    <p class="m4 mat-subheading-2">Connector</p>
+    <manager orientation="horizontal"
+             [data]="connector"
+             [viewable]="false"
+             [removable]="false"
+             (edit)="editConnector.emit($event)">
+        <connector-display [connector]="connector"></connector-display>
+    </manager>
+    <section fxLayout="row"
+             fxLayoutAlign="space-between center"
+             class="m4 mt12">
+        <p class="m4 mat-subheading-2">Queries</p>
+        <button mat-stroked-button
+                color="primary"
+                (click)="add.emit()">
+            Add Query
+        </button>
+    </section>
+    <ng-template #loading>
+        <mat-progress-bar mode="indeterminate"
+                          color="accent"></mat-progress-bar>
+    </ng-template>
+    <async-source searchLabel="Search Queries"
+                  emptyLabel="No Queries Available"
+                  layout="column"
+                  alignment="start stretch"
+                  [inlineControls]="false"
+                  [src]="querySrc">
+        <ng-container *ngIf="querySrc.result$ | async as query else loading">
+            <query-card *ngFor="let q of query.data"
+                        [query]="q"
+                        [selected]="selected(q)"
+                        (download)="download.emit($event)"
+                        (fork)="fork.emit($event)"
+                        (remove)="remove.emit($event)"
+                        (select)="select.emit($event)"></query-card>
+        </ng-container>
+    </async-source>
+</section>

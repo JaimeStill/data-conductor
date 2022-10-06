@@ -35,6 +35,7 @@ import {
     ConnectorDialog,
     QueryDialog
 } from '../../dialogs';
+
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
