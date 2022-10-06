@@ -22,5 +22,5 @@ export const GenerateQueryForm = (query: Query, fb: FormBuilder): FormGroup =>
         name: [query?.name ?? '', Validators.required],
         url: [query?.url ?? ''],
         value: [query?.value ?? ''],
-        interpolated: [query?.interpolated]
+        interpolated: [query?.interpolated ?? false]
     })

@@ -4,7 +4,7 @@
         <span *ngIf="!(connector?.id > 0)">Add Connector</span>
     </h2>
     <mat-dialog-content>
-        <connector-form [data]="form"></connector-form>
+        <connector-form [form]="form"></connector-form>
     </mat-dialog-content>
     <mat-dialog-actions>
         <button mat-stroked-button

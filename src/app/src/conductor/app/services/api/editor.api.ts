@@ -6,6 +6,7 @@ import {
 
 import {
     firstValueFrom,
+    BehaviorSubject,
     Observable
 } from 'rxjs';
 
@@ -19,6 +20,9 @@ import { EntityApi } from './base';
 })
 export class EditorApi extends EntityApi<Editor> {
     private store: IStorage<Editor>;
+    private editors = new BehaviorSubject<Editor[]>(null);
+
+    editors$ = this.editors.asObservable();
     
     constructor(
         protected http: HttpClient,
@@ -27,6 +31,17 @@ export class EditorApi extends EntityApi<Editor> {
         super('editor', generator, http);
         this.store = new LocalStorage(`conductor-editor-config`);
     }
+
+    getAll$ = this.http.get<Editor[]>(`${this.api}getAll`);
+
+    getAll = () => 
+        this.getAll$
+            .subscribe({
+                next: (data: Editor[]) => this.editors.next(data),
+                error: (err: any) => {
+                    throw new Error(err);
+                }
+            })
 
     getDefaultEditor$ = (): Observable<Editor> =>
         this.http.get<Editor>(`${this.api}getDefaultEditor`);

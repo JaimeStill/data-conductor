@@ -31,6 +31,7 @@
                   spellcheck="false"
                   fxFlex
                   [ngClass]="editor.resize ? 'resize-horizontal' : 'no-resize'"
+                  [style.color]="editor?.color ?? 'inherit'"
                   [style.font-size.px]="editor?.fontSize ?? 14"
                   [style.font-family]="editor?.font ?? 'Courier New'"
                   [style.padding.px]="editor.padding"

@@ -1,7 +1,9 @@
 import {
     Component,
     Input,
-    OnDestroy
+    OnChanges,
+    OnDestroy,
+    SimpleChanges
 } from '@angular/core';
 
 import {
@@ -20,9 +22,9 @@ import { Subscription } from 'rxjs';
         ConnectorApi
     ]
 })
-export class ConnectorForm implements OnDestroy {
+export class ConnectorForm implements OnChanges, OnDestroy {
     private subs: Subscription[] = new Array<Subscription>;
-    form: FormGroup;
+    @Input() form: FormGroup;
 
     get name() { return this.form?.get('name') }
     get database() { return this.form?.get('database') }
@@ -31,7 +33,7 @@ export class ConnectorForm implements OnDestroy {
     private unsubscribe = () =>
         this.subs.forEach(sub => sub.unsubscribe());
 
-    private registerValidators = async () => {
+    private init = async () => {
         if (this.subs.length > 0) {
             this.unsubscribe();
             this.subs = new Array<Subscription>();
@@ -51,15 +53,15 @@ export class ConnectorForm implements OnDestroy {
         )
     }
 
-    @Input() set data(data: FormGroup) {
-        this.form = data;
-        this.registerValidators();
-    }
-
     constructor(
         private validator: ApiValidator,
         private connectorApi: ConnectorApi
     ) { }
+
+    async ngOnChanges(changes: SimpleChanges): Promise<void> {
+        if (changes.form)
+            await this.init();
+    }
 
     ngOnDestroy(): void {
         this.unsubscribe();

@@ -26,6 +26,11 @@ public class ConnectorSeeder : Seeder<Connector, ConductorContext>
                     {
                         Name = "Search Products",
                         Value = "SELECT top (20)\n    p.Name as 'name',\n    p.ProductNumber as 'name',\n    p.ProductId as 'id'\nFROM [AdventureWorks2019].[Production].[Product] as p\nWHERE p.Name like '%{{search}}%'"
+                    },
+                    new()
+                    {
+                        Name = "Search Addresses",
+                        Value = "SELECT TOP (20)\n    a.AddressLine1 AS 'addressOne',\n    a.AddressLine2 AS 'addressTwo',\n    a.City AS 'city',\n    s.[Name] AS 'state',\n    a.PostalCode AS 'zip'\nFROM [AdventureWorks2019].[Person].[Address] AS a\nINNER JOIN [AdventureWorks2019].[Person].[StateProvince] AS s\nON a.StateProvinceID = s.StateProvinceID\nWHERE a.City like '%{{search}}%' OR s.[Name] like '%{{search}}%'\nORDER BY s.[Name], a.[City], a.[PostalCode]"
                     }
                 }
             }

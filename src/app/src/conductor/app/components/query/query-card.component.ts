@@ -22,7 +22,7 @@ export class QueryCardComponent implements OnChanges {
     @Output() remove = new EventEmitter<Query>();
     @Output() select = new EventEmitter<Query>();
 
-    options = 'background-card rounded card-outline-accent';
+    options = 'background-card rounded card-outline-divider';
     selectedIcon = 'radio_button_unchecked';
 
     private updateSelected = () => {
@@ -30,7 +30,7 @@ export class QueryCardComponent implements OnChanges {
             this.options = 'background-card rounded card-outline-primary';
             this.selectedIcon = 'radio_button_checked';
         } else {
-            this.options = 'background-card rounded card-outline-accent';
+            this.options = 'background-card rounded card-outline-divider';
             this.selectedIcon = 'radio_button_unchecked';
         }
     }

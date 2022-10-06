@@ -30,9 +30,10 @@ namespace Conductor.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Font = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "Consolas"),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "inherit"),
+                    Font = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "Courier New"),
                     FontSize = table.Column<int>(type: "int", nullable: false, defaultValue: 14),
-                    Padding = table.Column<int>(type: "int", nullable: false),
+                    Padding = table.Column<int>(type: "int", nullable: false, defaultValue: 4),
                     TabSpacing = table.Column<int>(type: "int", nullable: false, defaultValue: 4),
                     Resize = table.Column<bool>(type: "bit", nullable: false),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),

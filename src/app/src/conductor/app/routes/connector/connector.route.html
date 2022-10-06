@@ -19,7 +19,7 @@
                     (select)="select($event)"></query-list>
         <section fxLayout="column"
                  fxLayoutAlign="start stretch"
-                 class="card-outline-accent rounded full-height"
+                 class="card-outline-divider rounded full-height"
                  fxFlex>
             <section *ngIf="form && editor && storage"
                      fxLayout="column"
@@ -34,6 +34,17 @@
                                [disabled]="!(query.interpolated)"
                                [(ngModel)]="interpolation">
                     </mat-form-field>
+                    <ng-container *ngIf="editorApi.editors$ | async as editors else loading">
+                        <mat-form-field>
+                            <mat-label>Editor Configuration</mat-label>
+                            <mat-select [value]="editor"
+                                        [compareWith]="compareEditors"
+                                        (selectionChange)="selectEditor($event.value)">
+                                <mat-option *ngFor="let e of editors"
+                                            [value]="e">{{e.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </ng-container>
                     <button mat-stroked-button
                             [disabled]="form.invalid || (query.interpolated && !(interpolation?.length > 0))"
                             (click)="execute()">
@@ -53,7 +64,7 @@
                     </button>
                 </mat-toolbar>
                 <query-form class="m8"
-                            [data]="form"
+                            [form]="form"
                             [editor]="editor"
                             [showEditor]="true"
                             (update)="update($event)"></query-form>
