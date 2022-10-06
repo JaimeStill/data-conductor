@@ -58,31 +58,10 @@
                             [showEditor]="true"
                             (update)="update($event)"></query-form>
             </section>
-            <ng-container *ngIf="query">
-                <mat-toolbar class="rounded"
-                             fxLayoutGap="8px">
-                    <span fxFlex>Results</span>
-                    <button mat-stroked-button
-                            color="primary"
-                            [disabled]="results?.length < 1"
-                            (click)="clearResults()">
-                        Clear Results
-                    </button>
-                    <button mat-icon-button
-                            (click)="toggleResultsExpanded()">
-                        <mat-icon>{{resultsExpanded ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}}</mat-icon>
-                    </button>
-                </mat-toolbar>
-                <ng-container *ngIf="resultsExpanded">
-                    <section *ngIf="results?.length > 0"
-                             class="p8 overflow m4"
-                             [style.max-height.px]="360">
-                        <pre *ngFor="let result of results"
-                             class="pre-wrap"><code>{{result | json}}</code></pre>
-                    </section>
-                    <p *ngIf="!(results?.length > 0)"
-                       class="m8 mat-subheading-2">No Results Available</p>
-                </ng-container>
+            <ng-container *ngIf="query && editor">
+                <results [results]="results"
+                         [spacing]="editor?.tabSpacing"
+                         (clear)="clearResults()"></results>
             </ng-container>
         </section>
     </section>

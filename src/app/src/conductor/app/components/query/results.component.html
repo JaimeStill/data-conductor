@@ -1,0 +1,32 @@
+<mat-toolbar class="rounded"
+             fxLayoutGap="8px">
+    <span fxFlex>Results</span>
+    <button mat-stroked-button
+            color="primary"
+            [disabled]="disabled()"
+            (click)="copy()">
+        Copy Results
+    </button>
+    <button mat-stroked-button
+            color="warn"
+            [disabled]="disabled()"
+            (click)="clear.emit()">
+        Clear Results
+    </button>
+    <button mat-icon-button
+            (click)="toggleExpanded()">
+        <mat-icon>{{expanded ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}}</mat-icon>
+    </button>
+</mat-toolbar>
+<ng-container *ngIf="expanded">
+    <section *ngIf="results?.length > 0"
+             class="p8 overflow m4"
+             [style.max-height.px]="360">
+        <pre *ngFor="let result of results"
+             class="pre-wrap cursor-pointer"
+             matRipple
+             (click)="copy(result)"><code>{{result | json}}</code></pre>
+    </section>
+    <p *ngIf="!(results?.length > 0)"
+       class="m8 mat-subheading-2">No Results Available</p>
+</ng-container>

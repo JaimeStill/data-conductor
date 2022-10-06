@@ -1,8 +1,8 @@
 
 SELECT TOP (20)
-	p.LastName as 'lastName',
-	p.FirstName as 'firstName',
-	p.MiddleName as 'middleName'
+    p.LastName as 'lastName',
+    p.FirstName as 'firstName',
+    p.MiddleName as 'middleName'
 FROM [AdventureWorks2019].[Person].[Person] as p
 WHERE p.LastName like 's%' and p.FirstName like 'ri%'
 ORDER BY p.LastName, p.FirstName
@@ -23,10 +23,10 @@ ORDER BY p.LastName, p.FirstName
 {"lastName":"Stone","firstName":"Richard","middleName":"D"}
 {"lastName":"Suarez","firstName":"Ricky","middleName":{}}
 
-SELECT top (20)
-	p.Name as 'name',
-	p.ProductNumber as 'name',
-	p.ProductId as 'id'
+SELECT TOP (20)
+    p.Name as 'name',
+    p.ProductNumber as 'name',
+    p.ProductId as 'id'
 FROM [AdventureWorks2019].[Production].[Product] as p
 WHERE p.Name like '%black%'
 
