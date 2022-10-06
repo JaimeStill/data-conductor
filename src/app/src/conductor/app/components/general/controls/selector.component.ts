@@ -7,22 +7,16 @@ import {
     SimpleChanges
 } from '@angular/core';
 
-import { Query } from '../../models';
-
 @Component({
-    selector: 'query-card',
-    templateUrl: 'query-card.component.html'
+    selector: 'selector',
+    templateUrl: 'selector.component.html'
 })
-export class QueryCardComponent implements OnChanges {
-    @Input() query: Query;
-    @Input() selected: boolean;
+export class SelectorComponent<T> {
+    @Input() data: T;
+    @Input() selected: boolean = false;
+    @Output() select = new EventEmitter<T>();
 
-    @Output() download = new EventEmitter<Query>();
-    @Output() fork = new EventEmitter<Query>();
-    @Output() remove = new EventEmitter<Query>();
-    @Output() select = new EventEmitter<Query>();
-
-    private baseOptions = `background-card rounded`;
+    private baseOptions = 'background-card rounded cursor-pointer';
     private deselectedOptions = `${this.baseOptions} card-outline-divider`;
     private selectedOptions = `${this.baseOptions} card-outline-primary`;
 

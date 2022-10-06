@@ -38,7 +38,7 @@ export class QueryDialog implements OnInit {
         @Inject(MAT_DIALOG_DATA) public query: Query
     ) { }
 
-    async ngOnInit(): Promise<void> {
+    ngOnInit(): void {
         this.storage = this.queryApi.generateStorage(this.query);
         
         const value = this.storage.hasState

@@ -38,7 +38,7 @@ export class ConnectorDialog implements OnInit {
         @Inject(MAT_DIALOG_DATA) public connector: Connector
     ) { }
 
-    async ngOnInit(): Promise<void> {
+    ngOnInit(): void {
         this.storage = this.connectorApi.generateStorage(this.connector);
 
         const value = this.storage.hasState

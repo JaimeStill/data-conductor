@@ -4,23 +4,23 @@
         <span *ngIf="!(query?.value?.length > 0)">Add Query</span>
     </h2>
     <mat-dialog-content>
-        <query-form [data]="form"
+        <query-form [form]="form"
                     (update)="update($event)"></query-form>
     </mat-dialog-content>
     <mat-dialog-actions>
-        <button mat-stroked-button
+        <button mat-button
                 color="primary"
                 [disabled]="!(storage.hasState) || form.invalid"
                 (click)="save()">
             Save Query
         </button>
-        <button mat-stroked-button
+        <button mat-button
                 class="color-blue"
                 [disabled]="!(storage.hasState)"
                 (click)="clearStorage()">
             Clear Cache
         </button>
-        <button mat-stroked-button
+        <button mat-button
                 color="warn"
                 mat-dialog-close>Cancel</button>
     </mat-dialog-actions>

@@ -1,0 +1,57 @@
+<div class="mat-typography">
+    <h2 mat-dialog-title>Editor Configurations</h2>
+    <mat-dialog-content>
+        <section fxLayout="row | wrap"
+                 fxLayoutAlign="start stretch">
+            <section fxLayout="column"
+                     fxLayoutAlign="start stretch"
+                     class="overflow card-outline-divider rounded p4 m4">
+                <ng-template #loading>
+                    <mat-progress-bar mode="indeterminate"
+                                      color="accent"></mat-progress-bar>
+                </ng-template>
+                <ng-container *ngIf="editorApi.editors$ | async as editors else loading">
+                    <selector *ngFor="let e of editors"
+                              [data]="e"
+                              [selected]="isSelected(e)"
+                              (select)="selectEditor($event)">
+                        <section class="p4">
+                            <p class="m4 mat-subheading-2">{{e.name}}</p>
+                        </section>
+                    </selector>
+                </ng-container>
+            </section>
+            <section fxLayout="column"
+                     fxLayoutAlign="start stretch"
+                     class="card-outline-divider rounded p4 m4"
+                     fxFlex>
+                <section *ngIf="preview"
+                         class="card-outline-divider rounded p8 m8">
+                    <editor-preview [preview]="preview"></editor-preview>
+                </section>
+                <editor-form *ngIf="form"
+                             [form]="form"
+                             (update)="update($event)"></editor-form>
+            </section>
+        </section>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button
+                color="primary"
+                [disabled]="!(storage?.hasState) || form?.invalid"
+                (click)="save()">
+            Save Editor
+        </button>
+        <button mat-button [disabled]="!editor?.id" (click)="useEditorConfig()">
+            Use Editor Configuration
+        </button>
+        <button mat-button
+                class="color-blue"
+                [disabled]="!(storage?.hasState)"
+                (click)="clearStorage()">
+            Clear Cache
+        </button>
+        <button mat-button
+                mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+</div>

@@ -1,8 +1,8 @@
 import {
     Component,
-    OnChanges,
     EventEmitter,
     Input,
+    OnChanges,
     Output,
     SimpleChanges
 } from '@angular/core';
@@ -25,23 +25,46 @@ export class ManagerComponent<T> implements OnChanges {
 
     layout: string = 'column';
     alignment: string = 'start stretch';
+    controlLayout: string = 'row';
+    controlAlignment: string = 'space-between center';
     controlOptions: string = 'background-default rounded-bottom p4';
 
-    updateLayout = (orientation: ManagerOrientation) => {
-        if (orientation == 'vertical') {
+    private multipleControls = (): boolean => (
+        (this.editable && this.viewable)
+        || (this.editable && this.removable)
+        || (this.viewable && this.removable)
+    );
+
+    private updateLayout = () => {
+        if (this.orientation == 'vertical') {
             this.layout = 'column';
             this.alignment = 'start stretch';
+            this.controlLayout = 'row';
             this.controlOptions = 'background-default rounded-bottom p4';
         } else {
             this.layout = 'row';
             this.alignment = 'space-between stretch';
+            this.controlLayout = 'column';
             this.controlOptions = 'background-default rounded-right p4'
         }
     }
 
+    private updateControlAlignment = () => {
+        if (this.multipleControls())
+            this.controlAlignment = 'space-between center'
+        else
+            this.controlAlignment = this.orientation === 'horizontal'
+                ? 'center center'
+                : 'end center';
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
-        if (!!changes.orientation?.currentValue) {
-            this.updateLayout(changes.orientation.currentValue);
+        if (changes.orientation) {
+            this.updateLayout();
+        }
+
+        if (changes.editable || changes.removable || changes.viewable) {
+            this.updateControlAlignment()
         }
     }
 }

@@ -1,6 +1,8 @@
 using Conductor.Data;
 using Conductor.Models.Entities;
+using Conductor.Models.Query;
 using Conductor.Models.Validation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Conductor.Services.Api;
 public class EditorService : EntityService<Editor>
@@ -16,6 +18,7 @@ public class EditorService : EntityService<Editor>
 
     static readonly Editor DefaultEditor = new()
     {
+        Color = "inherit",
         Font = "Courier New",
         FontSize = 14,
         Name = "Default",
@@ -23,6 +26,11 @@ public class EditorService : EntityService<Editor>
         TabSpacing = 4,
         Resize = false
     };
+
+    public async Task<List<Editor>> GetAll(string sort = "Name") =>
+        await query
+            .ApplySorting(new QueryOptions { Sort = sort })
+            .ToListAsync();
 
     public async Task<Editor> GetDefaultEditor()
     {

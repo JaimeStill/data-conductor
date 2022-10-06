@@ -7,6 +7,7 @@ import {
 import { Entity } from './base';
 
 export interface Editor extends Entity {
+    color: string;
     font: string;
     fontSize: number;
     padding: number;
@@ -18,6 +19,8 @@ export const GenerateEditorForm = (editor: Editor, fb: FormBuilder) =>
     fb.group({
         id: [editor?.id ?? 0],
         name: [editor?.name ?? '', Validators.required],
+        url: [editor?.url ?? ''],
+        color: [editor?.color || 'inherit', Validators.required],
         font: [editor?.font ?? '', Validators.required],
         fontSize: [editor?.fontSize ?? 14, [
             Validators.required,

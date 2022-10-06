@@ -2,9 +2,11 @@ import {
     Component,
     EventEmitter,
     Input,
+    OnChanges,
     OnDestroy,
     OnInit,
-    Output
+    Output,
+    SimpleChanges
 } from '@angular/core';
 
 import {
@@ -38,10 +40,10 @@ import { FormGroup } from '@angular/forms';
         'class': 'full-height'
     }
 })
-export class QueryForm implements OnInit, OnDestroy {
+export class QueryForm implements OnChanges, OnInit, OnDestroy {
     private subs: Subscription[] = new Array<Subscription>();
     connectors$: Observable<Connector[]>;
-    form: FormGroup;
+    @Input() form: FormGroup;
 
     get connector() { return this.form?.get('connectorId') }
     get name() { return this.form?.get('name') }
@@ -49,7 +51,7 @@ export class QueryForm implements OnInit, OnDestroy {
 
     private unsubscribe = () => this.subs.forEach(sub => sub.unsubscribe());
 
-    private register = async () => {
+    private init = async () => {
         if (this.subs.length > 0) {
             this.unsubscribe();
             this.subs = new Array<Subscription>();
@@ -66,12 +68,6 @@ export class QueryForm implements OnInit, OnDestroy {
                 .subscribe((query: Query) => this.update.emit(query))
         );
     }
-
-    @Input() set data(data: FormGroup) {
-        this.form = data;
-        this.register();
-    }
-
 
     @Input() editor: Editor = {
         font: 'Courier New',
@@ -93,6 +89,11 @@ export class QueryForm implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.connectors$ = this.connectorApi.getAll$();
+    }
+
+    async ngOnChanges(changes: SimpleChanges): Promise<void> {
+        if (changes.form)
+            this.init();
     }
 
     ngOnDestroy(): void {

@@ -1,0 +1,41 @@
+<form [formGroup]="form">
+    <section fxLayout="column" fxLayoutAlign="start stretch">
+        <mat-form-field class="my4">
+            <mat-label>Name</mat-label>
+            <input formControlName="name" matInput>
+            <mat-error *ngIf="name?.errors?.required">Name is required</mat-error>
+            <mat-error *ngIf="name?.errors?.api">Name is already in use</mat-error>
+        </mat-form-field>
+        <mat-form-field class="my4">
+            <mat-label>Color</mat-label>
+            <input formControlName="color" matInput>
+            <mat-error *ngIf="color?.errors?.required">Color is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="my4">
+            <mat-label>Font</mat-label>
+            <input formControlName="font" matInput>
+            <mat-error *ngIf="font?.errors?.required">Font is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="my4">
+            <mat-label>Font Size</mat-label>
+            <input formControlName="fontSize" matInput type="number" min="10" max="24">
+            <mat-error *ngIf="fontSize?.errors?.required">Font Size is required</mat-error>
+            <mat-error *ngIf="fontSize?.errors?.min">Font Size must be at least 10</mat-error>
+            <mat-error *ngIf="fontSize?.errors?.max">Font Size must be no greater than 24</mat-error>
+        </mat-form-field>
+        <mat-form-field class="my4">
+            <mat-label>Padding</mat-label>
+            <input formControlName="padding" matInput type="number" min="2" max="16">
+            <mat-error *ngIf="padding?.errors?.required">Padding is required</mat-error>
+            <mat-error *ngIf="padding?.errors?.min">Padding must be at least 2</mat-error>
+            <mat-error *ngIf="padding?.errors?.max">Padding must be no greater than 16</mat-error>
+        </mat-form-field>
+        <mat-form-field class="my4">
+            <mat-label>Tab Spacing</mat-label>
+            <input formControlName="tabSpacing" matInput type="number" min="2" max="8">
+            <mat-error *ngIf="tabSpacing?.errors?.required">Tab Spacing is required</mat-error>
+            <mat-error *ngIf="tabSpacing?.errors?.min">Tab Spacing must be at least 2</mat-error>
+            <mat-error *ngIf="tabSpacing?.errors?.max">Tab Spacing must be no greater than 8</mat-error>
+        </mat-form-field>
+    </section>
+</form>

@@ -33,8 +33,10 @@ import {
 import {
     ConfirmDialog,
     ConnectorDialog,
+    EditorDialog,
     QueryDialog
 } from '../../dialogs';
+
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -52,7 +54,6 @@ export class ConnectorRoute implements OnInit, OnDestroy {
     query: Query;
     querySrc: QuerySource<Query>;
     results: any[];
-    resultsExpanded: boolean = false;
 
     interpolation: string = '';
     form: FormGroup;
@@ -64,12 +65,13 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private connectorApi: ConnectorApi,
-        private editorApi: EditorApi,
+        public editorApi: EditorApi,
         private queryApi: QueryApi
     ) { }
 
     async ngOnInit(): Promise<void> {
         this.editor = await this.editorApi.getStoreEditor();
+        this.editorApi.getAll();
 
         this.route.paramMap.subscribe(async (params: ParamMap) => {
             if (params.has('url')) {
@@ -84,17 +86,31 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         this.querySrc.unsubscribe();
     }
 
-    toggleResultsExpanded = () => this.resultsExpanded = !this.resultsExpanded;
+    compareEditors = (a: Editor, b: Editor) => a.id === b.id;
+
+    selectEditor = (e: Editor) => {
+        this.editor = e;
+        this.editorApi.updateStoreEditor(e);
+    }
+
+    editorSettings = () => this.dialog.open(EditorDialog, {
+        disableClose: true
+    })
+    .afterClosed()
+    .subscribe(async () => {
+        this.editor = await this.editorApi.getStoreEditor();
+        this.editorApi.getAll();
+    });
 
     editConnector = (connector: Connector) => this.dialog.open(ConnectorDialog, {
         data: Object.assign({} as Connector, connector),
         disableClose: true
     })
-    .afterClosed()
-    .subscribe((res: Connector) => {
-        if (res)
-            this.router.navigate(['connector', res.url]);
-    });
+        .afterClosed()
+        .subscribe((res: Connector) => {
+            if (res)
+                this.router.navigate(['connector', res.url]);
+        });
 
     selected = (query: Query) => this.query?.id === query.id;
 
@@ -102,8 +118,8 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         data: { connectorId: this.connector?.id } as Query,
         disableClose: true
     })
-    .afterClosed()
-    .subscribe((res: Query) => res && this.querySrc.refresh());
+        .afterClosed()
+        .subscribe((res: Query) => res && this.querySrc.refresh());
 
     download = (query: Query) => this.queryApi.download(query);
 
@@ -115,8 +131,8 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         ),
         disableClose: true
     })
-    .afterClosed()
-    .subscribe((res: Query) => res && this.querySrc.refresh());
+        .afterClosed()
+        .subscribe((res: Query) => res && this.querySrc.refresh());
 
     remove = (query: Query) => this.dialog.open(ConfirmDialog, {
         data: {
@@ -126,13 +142,13 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         disableClose: true,
         autoFocus: false
     })
-    .afterClosed()
-    .subscribe(async (result: boolean) => {
-        if (result) {
-            const res = await this.queryApi.remove(query);
-            res && this.querySrc.refresh();
-        }
-    });
+        .afterClosed()
+        .subscribe(async (result: boolean) => {
+            if (result) {
+                const res = await this.queryApi.remove(query);
+                res && this.querySrc.refresh();
+            }
+        });
 
     select = (query: Query) => {
         if (this.selected(query)) {
@@ -170,17 +186,10 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         }
     }
 
-    clearResults = () => {
-        this.results = null;
-        this.resultsExpanded = false;
-    }
+    clearResults = () => this.results = null;
 
-    execute = async () => {
+    execute = async () =>
         this.results = this.form.get('interpolated').value
             ? await this.queryApi.executeWithProps(this.form.value, this.interpolation)
             : await this.queryApi.execute(this.form.value);
-
-        if (this.results?.length > 0)
-            this.resultsExpanded = true;
-    }
 }

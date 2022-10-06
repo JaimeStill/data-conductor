@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Conductor.Data.Migrations
 {
     [DbContext(typeof(ConductorContext))]
-    [Migration("20221001000243_Initial")]
+    [Migration("20221006174555_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,10 +60,15 @@ namespace Conductor.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Color")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("inherit");
+
                     b.Property<string>("Font")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("Consolas");
+                        .HasDefaultValue("Courier New");
 
                     b.Property<int>("FontSize")
                         .ValueGeneratedOnAdd()
@@ -74,7 +79,9 @@ namespace Conductor.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Padding")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(4);
 
                     b.Property<bool>("Resize")
                         .HasColumnType("bit");

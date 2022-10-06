@@ -15,6 +15,10 @@ public class EditorController : EntityController<Editor>
     }
 
     [HttpGet("[action]")]
+    public async Task<IActionResult> GetAll() =>
+        Ok(await editorSvc.GetAll());
+
+    [HttpGet("[action]")]
     public async Task<IActionResult> GetDefaultEditor() =>
         Ok(await editorSvc.GetDefaultEditor());
 }

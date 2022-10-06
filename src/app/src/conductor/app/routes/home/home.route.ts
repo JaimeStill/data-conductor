@@ -40,12 +40,7 @@ export class HomeRoute implements OnInit, OnDestroy {
   }
 
   add = () => this.dialog.open(ConnectorDialog, {
-    data: {
-      id: 0,
-      name: '',
-      database: '',
-      server: ''
-    } as Connector,
+    data: this.connectorApi.init(),
     disableClose: true
   })
   .afterClosed()
