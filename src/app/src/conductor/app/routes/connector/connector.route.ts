@@ -18,7 +18,8 @@ import {
 import {
     ConnectorApi,
     EditorApi,
-    QueryApi
+    QueryApi,
+    SnackerService
 } from '../../services';
 
 import {
@@ -63,8 +64,9 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private connectorApi: ConnectorApi,
+        private queryApi: QueryApi,
+        private snacker: SnackerService,
         public editorApi: EditorApi,
-        private queryApi: QueryApi
     ) { }
 
     async ngOnInit(): Promise<void> {
@@ -95,6 +97,15 @@ export class ConnectorRoute implements OnInit, OnDestroy {
             if (res)
                 this.router.navigate(['connector', res.url]);
         });
+
+    testConnector = async (connector: Connector) => {
+        const result = await this.connectorApi.test(connector);
+
+        if (result.isValid)
+            this.snacker.sendSuccessMessage(`Database connection successful`);
+        else
+            this.snacker.sendErrorMessage(result.message);
+    }
 
     //#endregion
 

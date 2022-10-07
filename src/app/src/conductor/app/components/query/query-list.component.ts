@@ -24,6 +24,8 @@ export class QueryListComponent {
     @Input() current: Query;
 
     @Output() editConnector = new EventEmitter<Connector>();
+    @Output() testConnector = new EventEmitter<Connector>();
+
     @Output() add = new EventEmitter();
     @Output() download = new EventEmitter<Query>();
     @Output() fork = new EventEmitter<Query>();

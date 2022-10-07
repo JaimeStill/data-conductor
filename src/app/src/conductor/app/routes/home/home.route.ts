@@ -73,7 +73,10 @@ export class HomeRoute implements OnInit, OnDestroy {
   test = async (connector: Connector) => {
     const result = await this.connectorApi.test(connector);
 
-
+    if (result.isValid)
+      this.snacker.sendSuccessMessage(`Database connection successful`);
+    else
+      this.snacker.sendErrorMessage(result.message);
   }
 
   view = (connector: Connector) =>

@@ -18,6 +18,7 @@ export type ConnectorOrientation = 'vertical' | 'horizontal';
 export class ConnectorCardComponent implements OnChanges {
     @Input() connector: Connector;
     @Input() orientation: ConnectorOrientation = 'vertical';
+    @Input() testing: boolean = false;
     @Input() editable: boolean = true;
     @Input() removable: boolean = true;
     @Input() testable: boolean = true;

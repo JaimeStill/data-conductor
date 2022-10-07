@@ -2,13 +2,12 @@
          fxLayoutAlign="start stretch"
          class="card-outline-divider rounded full-height p8">
     <p class="m4 mat-subheading-2">Connector</p>
-    <manager orientation="horizontal"
-             [data]="connector"
-             [viewable]="false"
-             [removable]="false"
-             (edit)="editConnector.emit($event)">
-        <connector-display [connector]="connector"></connector-display>
-    </manager>
+    <connector-card orientation="horizontal"
+                    [connector]="connector"
+                    [viewable]="false"
+                    [removable]="false"
+                    (test)="testConnector.emit($event)"
+                    (edit)="editConnector.emit($event)"></connector-card>
     <section fxLayout="row"
              fxLayoutAlign="start center"
              fxLayoutGap="8px"

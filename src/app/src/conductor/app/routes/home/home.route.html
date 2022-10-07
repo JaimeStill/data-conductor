@@ -22,11 +22,11 @@
                       [src]="connectorSrc">
             <ng-container *ngIf="connectorSrc.result$ | async as query else loading">
                 <connector-card *ngFor="let c of query.data"
-                         [connector]="c"
-                         (edit)="edit($event)"
-                         (remove)="remove($event)"
-                         (test)="test($event)"
-                         (view)="view($event)"></connector-card>
+                                [connector]="c"
+                                (edit)="edit($event)"
+                                (remove)="remove($event)"
+                                (test)="test($event)"
+                                (view)="view($event)"></connector-card>
             </ng-container>
         </async-source>
     </ng-container>
