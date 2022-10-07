@@ -1,25 +1,55 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Migrator.Data;
+using Migrator.Services.Api;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder
+    .Services
+    .AddCors(options =>
+        options.AddDefaultPolicy(policy =>
+        {
+            policy.AllowAnyOrigin();
+            policy.AllowAnyHeader();
+            policy.AllowAnyMethod();
+            policy.WithExposedHeaders(
+                "Content-Disposition",
+                "Access-Control-Allow-Origin"
+            );
+        })
+    );
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder
+    .Services
+    .AddDbContext<AppDbContext>(options =>
+    {
+        options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        options.UseSqlServer(builder.Configuration.GetConnectionString("App"));
+    })
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAppServices();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
+app.UseRouting();
+app.UseCors();
 app.MapControllers();
 
 app.Run();

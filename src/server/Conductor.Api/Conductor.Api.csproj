@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Conductor.Services\Conductor.Services.csproj" />
     <ProjectReference Include="..\Conductor.Data\Conductor.Data.csproj" />
     <ProjectReference Include="..\Conductor.Models\Conductor.Models.csproj" />
+    <ProjectReference Include="..\Conductor.Services\Conductor.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

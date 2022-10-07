@@ -3,7 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Migrator.Data\Migrator.Data.csproj" />
+    <ProjectReference Include="..\Migrator.Models\Migrator.Models.csproj" />
+  </ItemGroup>
 
 </Project>
