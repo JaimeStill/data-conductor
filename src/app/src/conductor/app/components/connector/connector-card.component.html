@@ -2,10 +2,15 @@
       [alignment]="alignment"
       width="auto"
       options="background-card rounded card-outline-divider">
-    <connector-display [connector]="connector"></connector-display>
-    <mat-progress-bar *ngIf="testing"
-                      mode="indeterminate"
-                      color="accent"></mat-progress-bar>
+    <section fxLayout="row"
+             fxLayoutAlign="start center">
+        <mat-progress-spinner *ngIf="testing"
+                              mode="indeterminate"
+                              color="primary"
+                              class="m8"
+                              [diameter]="32"></mat-progress-spinner>
+        <connector-display [connector]="connector"></connector-display>
+    </section>
     <section [fxLayout]="controlLayout"
              [fxLayoutAlign]="controlAlignment"
              [class]="controlOptions">
@@ -25,7 +30,7 @@
                 class="color-blue"
                 mat-icon-button
                 [disabled]="testing"
-                (click)="test.emit(connector)">
+                (click)="test()">
             <mat-icon>sync</mat-icon>
         </button>
         <button *ngIf="viewable"

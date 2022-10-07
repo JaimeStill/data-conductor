@@ -28,7 +28,6 @@ export class HomeRoute implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private router: Router,
-    private snacker: SnackerService,
     public connectorApi: ConnectorApi
   ) { }
 
@@ -69,15 +68,6 @@ export class HomeRoute implements OnInit, OnDestroy {
       res && this.connectorSrc.refresh();
     }
   })
-
-  test = async (connector: Connector) => {
-    const result = await this.connectorApi.test(connector);
-
-    if (result.isValid)
-      this.snacker.sendSuccessMessage(`Database connection successful`);
-    else
-      this.snacker.sendErrorMessage(result.message);
-  }
 
   view = (connector: Connector) =>
     this.router.navigate(['connector', connector.url]);

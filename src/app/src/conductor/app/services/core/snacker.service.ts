@@ -12,7 +12,7 @@ export class SnackerService {
   private config = new MatSnackBarConfig();
 
   constructor(private snackbar: MatSnackBar) {
-    this.config.duration = 500000;
+    this.config.duration = 5000;
     this.config.panelClass = [];
   }
 
@@ -24,6 +24,7 @@ export class SnackerService {
 
   setClasses = (classes: string[]) => {
     classes.push('snacker');
+    classes.push('background-card');
     this.config.panelClass = classes;
   }
 

@@ -98,15 +98,6 @@ export class ConnectorRoute implements OnInit, OnDestroy {
                 this.router.navigate(['connector', res.url]);
         });
 
-    testConnector = async (connector: Connector) => {
-        const result = await this.connectorApi.test(connector);
-
-        if (result.isValid)
-            this.snacker.sendSuccessMessage(`Database connection successful`);
-        else
-            this.snacker.sendErrorMessage(result.message);
-    }
-
     //#endregion
 
     //#region Query
