@@ -2,24 +2,29 @@
       [alignment]="alignment"
       width="auto"
       options="background-card rounded card-outline-divider">
-    <ng-content></ng-content>
+    <connector-display [connector]="connector"></connector-display>
     <section [fxLayout]="controlLayout"
              [fxLayoutAlign]="controlAlignment"
              [class]="controlOptions">
         <button *ngIf="removable"
                 mat-icon-button
                 color="warn"
-                (click)="remove.emit(data)">
+                (click)="remove.emit(connector)">
             <mat-icon>delete_outline</mat-icon>
         </button>
         <button mat-icon-button
-                (click)="edit.emit(data)">
+                (click)="edit.emit(connector)">
             <mat-icon>edit</mat-icon>
+        </button>
+        <button *ngIf="testable"
+                mat-icon-button
+                (click)="test.emit(connector)">
+            <mat-icon>sync</mat-icon>
         </button>
         <button *ngIf="viewable"
                 mat-icon-button
                 color="primary"
-                (click)="view.emit(data)">
+                (click)="view.emit(connector)">
             <mat-icon>arrow_forward</mat-icon>
         </button>
     </section>

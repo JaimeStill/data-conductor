@@ -16,7 +16,7 @@ import {
 
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { ConnectorApi } from '../../services';
+import { ConnectorApi, SnackerService } from '../../services';
 
 @Component({
   selector: 'home-route',
@@ -28,6 +28,7 @@ export class HomeRoute implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private router: Router,
+    private snacker: SnackerService,
     public connectorApi: ConnectorApi
   ) { }
 
@@ -68,6 +69,12 @@ export class HomeRoute implements OnInit, OnDestroy {
       res && this.connectorSrc.refresh();
     }
   })
+
+  test = async (connector: Connector) => {
+    const result = await this.connectorApi.test(connector);
+
+
+  }
 
   view = (connector: Connector) =>
     this.router.navigate(['connector', connector.url]);
