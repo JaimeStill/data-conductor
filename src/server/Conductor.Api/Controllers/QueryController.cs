@@ -26,6 +26,18 @@ public class QueryController : EntityController<Query>
         [FromQuery] string sort = "Name"
     ) => Ok(await querySvc.GetByConnector(connectorId, sort));
 
+    [HttpGet("[action]/{url}")]
+    [Produces("application/json")]
+    public async Task<IActionResult> Execute([FromRoute]string url) =>
+        Ok(await querySvc.Execute(url));
+
+    [HttpGet("[action]/{url}/{*props}")]
+    [Produces("application/json")]
+    public async Task<IActionResult> Execute(
+        [FromRoute] string url,
+        [FromRoute] string props
+    ) => Ok(await querySvc.Execute(url, props));
+
     [HttpPost("[action]")]
     [Produces("application/json")]
     public async Task<IActionResult> Execute([FromBody]Query query) =>

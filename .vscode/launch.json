@@ -26,19 +26,6 @@
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
-        },
-        {
-            "name": "Debug Console",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "conductor-build",
-            "program": "${workspaceFolder}/src/server/Conductor.Console/bin/Debug/net6.0/Conductor.Console.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/src/server/Conductor.Console",
-            "stopAtEntry": false,
-            "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            }
         }
     ]
 }

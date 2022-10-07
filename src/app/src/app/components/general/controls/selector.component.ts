@@ -11,7 +11,7 @@ import {
     selector: 'selector',
     templateUrl: 'selector.component.html'
 })
-export class SelectorComponent<T> {
+export class SelectorComponent<T> implements OnChanges {
     @Input() data: T;
     @Input() selected: boolean = false;
     @Output() select = new EventEmitter<T>();
