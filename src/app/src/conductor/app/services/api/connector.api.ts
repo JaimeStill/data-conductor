@@ -20,7 +20,7 @@ export class ConnectorApi extends EntityApi<Connector> {
         super('connector', generator, http);
     }
 
-    override init = () => Object.assign(
+    override getBase = () => Object.assign(
         <Connector>{
             database: '',
             server: ''

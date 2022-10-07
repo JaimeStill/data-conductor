@@ -42,16 +42,18 @@
                 (click)="save()">
             Save Editor
         </button>
-        <button mat-button [disabled]="!editor?.id" (click)="useEditorConfig()">
+        <button mat-button
+                [disabled]="!editor?.id"
+                (click)="useEditorConfig()">
             Use Editor Configuration
         </button>
         <button mat-button
-                class="color-blue"
                 [disabled]="!(storage?.hasState)"
                 (click)="clearStorage()">
             Clear Cache
         </button>
         <button mat-button
+                color="warn"
                 mat-dialog-close>Close</button>
     </mat-dialog-actions>
 </div>

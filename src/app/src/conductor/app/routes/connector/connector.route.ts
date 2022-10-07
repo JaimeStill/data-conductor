@@ -44,13 +44,11 @@ import { MatDialog } from '@angular/material/dialog';
     templateUrl: 'connector.route.html',
     providers: [
         ConnectorApi,
-        EditorApi,
         QueryApi
     ]
 })
 export class ConnectorRoute implements OnInit, OnDestroy {
     connector: Connector;
-    editor: Editor;
     query: Query;
     querySrc: QuerySource<Query>;
     results: any[];
@@ -70,7 +68,7 @@ export class ConnectorRoute implements OnInit, OnDestroy {
     ) { }
 
     async ngOnInit(): Promise<void> {
-        this.editor = await this.editorApi.getStoreEditor();
+        this.editorApi.getStoreEditor();
         this.editorApi.getAll();
 
         this.route.paramMap.subscribe(async (params: ParamMap) => {
@@ -86,21 +84,7 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         this.querySrc.unsubscribe();
     }
 
-    compareEditors = (a: Editor, b: Editor) => a.id === b.id;
-
-    selectEditor = (e: Editor) => {
-        this.editor = e;
-        this.editorApi.updateStoreEditor(e);
-    }
-
-    editorSettings = () => this.dialog.open(EditorDialog, {
-        disableClose: true
-    })
-    .afterClosed()
-    .subscribe(async () => {
-        this.editor = await this.editorApi.getStoreEditor();
-        this.editorApi.getAll();
-    });
+    //#region Connector
 
     editConnector = (connector: Connector) => this.dialog.open(ConnectorDialog, {
         data: Object.assign({} as Connector, connector),
@@ -111,6 +95,10 @@ export class ConnectorRoute implements OnInit, OnDestroy {
             if (res)
                 this.router.navigate(['connector', res.url]);
         });
+
+    //#endregion
+
+    //#region Query
 
     selected = (query: Query) => this.query?.id === query.id;
 
@@ -192,4 +180,21 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         this.results = this.form.get('interpolated').value
             ? await this.queryApi.executeWithProps(this.form.value, this.interpolation)
             : await this.queryApi.execute(this.form.value);
+
+    //#endregion
+
+    //#region Editor
+
+    compareEditors = (a: Editor, b: Editor) => a.id === b.id;
+
+    selectEditor = (e: Editor) => this.editorApi.updateStoreEditor(e);
+
+    editorSettings = () => this.dialog.open(EditorDialog, {
+        data: this.editorApi,
+        disableClose: true
+    })
+    .afterClosed()
+    .subscribe(() => this.editorApi.getAll());
+
+    //#endregion
 }

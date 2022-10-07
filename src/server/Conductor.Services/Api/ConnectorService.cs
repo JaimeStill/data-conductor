@@ -26,9 +26,7 @@ public class ConnectorService : EntityService<Connector>
             );
 
     public async Task<List<Connector>> GetAll(string sort = "Name") =>
-        await query
-            .ApplySorting(new QueryOptions { Sort = sort })
-            .ToListAsync();
+        await Get(query, sort);
 
     public override async Task<ValidationResult> Validate(Connector entity)
     {

@@ -18,8 +18,7 @@ import { EditorApi } from '../../services';
 
 @Component({
     selector: 'editor-dialog',
-    templateUrl: 'editor.dialog.html',
-    providers: [ EditorApi ]
+    templateUrl: 'editor.dialog.html'
 })
 export class EditorDialog implements OnInit {
     storage: IStorage<Editor>;
@@ -33,7 +32,7 @@ export class EditorDialog implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.init(this.editorApi.init());
+        this.init(this.editorApi.getBase());
         this.editorApi.getAll();
     }
 
@@ -52,7 +51,7 @@ export class EditorDialog implements OnInit {
     }
 
     selectEditor = (e: Editor) => this.isSelected(e)
-        ? this.init(this.editorApi.init())
+        ? this.init(this.editorApi.getBase())
         : this.init(e);
 
     update = (e: { editor: Editor, store: boolean }) => {
