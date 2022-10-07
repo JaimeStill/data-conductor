@@ -69,13 +69,13 @@ export class QueryForm implements OnChanges, OnInit, OnDestroy {
         );
     }
 
-    @Input() editor: Editor = {
+    @Input() editor: Editor = <Editor>{
         font: 'Courier New',
         fontSize: 14,
         padding: 4,
         tabSpacing: 4,
         resize: false
-    } as Editor;
+    };
 
     @Input() showEditor: boolean = false;
 

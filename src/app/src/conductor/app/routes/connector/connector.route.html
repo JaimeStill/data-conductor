@@ -16,7 +16,8 @@
                     (download)="download($event)"
                     (fork)="fork($event)"
                     (remove)="remove($event)"
-                    (select)="select($event)"></query-list>
+                    (select)="select($event)"
+                    (upload)="upload($event)"></query-list>
         <ng-container *ngIf="editorApi.editor$ | async as editor else loading">
             <section fxLayout="column"
                      fxLayoutAlign="start stretch"

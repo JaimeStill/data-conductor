@@ -1,0 +1,11 @@
+<input #uploader
+       type="file"
+       class="no-display"
+       accept=".sql"
+       [multiple]="false"
+       (change)="fileChange($event)">
+<button mat-button
+        [class]="options"
+        (click)="uploader.click()">
+    {{label}}
+</button>
