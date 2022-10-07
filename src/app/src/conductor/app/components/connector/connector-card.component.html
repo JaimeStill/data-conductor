@@ -1,0 +1,44 @@
+<card [layout]="layout"
+      [alignment]="alignment"
+      width="auto"
+      options="background-card rounded card-outline-divider">
+    <section fxLayout="row"
+             fxLayoutAlign="start center">
+        <mat-progress-spinner *ngIf="testing"
+                              mode="indeterminate"
+                              color="primary"
+                              class="m8"
+                              [diameter]="32"></mat-progress-spinner>
+        <connector-display [connector]="connector"></connector-display>
+    </section>
+    <section [fxLayout]="controlLayout"
+             [fxLayoutAlign]="controlAlignment"
+             [class]="controlOptions">
+        <button *ngIf="removable"
+                mat-icon-button
+                color="warn"
+                [disabled]="testing"
+                (click)="remove.emit(connector)">
+            <mat-icon>delete_outline</mat-icon>
+        </button>
+        <button mat-icon-button
+                [disabled]="testing"
+                (click)="edit.emit(connector)">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button *ngIf="testable"
+                class="color-blue"
+                mat-icon-button
+                [disabled]="testing"
+                (click)="test()">
+            <mat-icon>sync</mat-icon>
+        </button>
+        <button *ngIf="viewable"
+                mat-icon-button
+                color="primary"
+                [disabled]="testing"
+                (click)="view.emit(connector)">
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+    </section>
+</card>

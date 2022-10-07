@@ -21,13 +21,11 @@
                       emptyLabel="No Connectors Available"
                       [src]="connectorSrc">
             <ng-container *ngIf="connectorSrc.result$ | async as query else loading">
-                <manager *ngFor="let c of query.data"
-                         [data]="c"
-                         (edit)="edit($event)"
-                         (remove)="remove($event)"
-                         (view)="view($event)">
-                    <connector-display [connector]="c"></connector-display>
-                </manager>
+                <connector-card *ngFor="let c of query.data"
+                                [connector]="c"
+                                (edit)="edit($event)"
+                                (remove)="remove($event)"
+                                (view)="view($event)"></connector-card>
             </ng-container>
         </async-source>
     </ng-container>

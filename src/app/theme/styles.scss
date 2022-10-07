@@ -155,5 +155,5 @@
   }
 
   @include style-glow($palette);
-  @include style-snacker($palette);
+  @include style-snacker($card, $text, $palette);
 }

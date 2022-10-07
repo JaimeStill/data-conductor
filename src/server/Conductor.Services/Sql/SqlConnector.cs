@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Text.Json.Nodes;
 using Conductor.Models.Entities;
+using Conductor.Models.Validation;
 using Microsoft.Data.SqlClient;
 
 namespace Conductor.Services.Sql;
@@ -10,6 +11,35 @@ public static class SqlConnector
     {
         4060, 40197, 40501, 40613, 49918, 49919, 49920, 11001
     };
+
+    public static async Task<ValidationResult> TestConnector(Connector connector)
+    {
+        ValidationResult result = new();
+
+        try
+        {
+            using SqlConnection connection = BuildConnection(connector);
+            await connection.OpenAsync();
+            
+            if (connection.State != ConnectionState.Open)
+                result.AddMessage("Unable to connect to the database");
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            result.AddMessage(ex.Message);
+            Exception inner = ex.InnerException;
+
+            while (inner is not null)
+            {
+                result.AddMessage(inner.Message);
+                inner = inner.InnerException;
+            }
+
+            return result;
+        }
+    }
 
     public static async Task<JsonArray> Execute(Connector connector, string query)
     {

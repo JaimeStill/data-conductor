@@ -2,6 +2,7 @@ using Conductor.Data;
 using Conductor.Models.Entities;
 using Conductor.Models.Query;
 using Conductor.Models.Validation;
+using Conductor.Services.Sql;
 using Microsoft.EntityFrameworkCore;
 
 namespace Conductor.Services.Api;
@@ -27,6 +28,15 @@ public class ConnectorService : EntityService<Connector>
 
     public async Task<List<Connector>> GetAll(string sort = "Name") =>
         await Get(query, sort);
+
+    public async Task<ValidationResult> Test(string url)
+    {
+        Connector connector = await GetByUrl(url);
+        return await Test(connector);
+    }
+
+    public static async Task<ValidationResult> Test(Connector connector) =>
+        await SqlConnector.TestConnector(connector);
 
     public override async Task<ValidationResult> Validate(Connector entity)
     {

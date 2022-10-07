@@ -24,6 +24,7 @@ export class SnackerService {
 
   setClasses = (classes: string[]) => {
     classes.push('snacker');
+    classes.push('background-card');
     this.config.panelClass = classes;
   }
 

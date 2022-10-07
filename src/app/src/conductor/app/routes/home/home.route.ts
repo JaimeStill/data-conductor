@@ -16,7 +16,7 @@ import {
 
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { ConnectorApi } from '../../services';
+import { ConnectorApi, SnackerService } from '../../services';
 
 @Component({
   selector: 'home-route',
