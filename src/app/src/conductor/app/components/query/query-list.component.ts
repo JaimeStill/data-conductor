@@ -29,6 +29,7 @@ export class QueryListComponent {
     @Output() fork = new EventEmitter<Query>();
     @Output() remove = new EventEmitter<Query>();
     @Output() select = new EventEmitter<Query>();
+    @Output() upload = new EventEmitter<string>();
 
     selected = (q: Query) => q?.id === this.current?.id;
 }

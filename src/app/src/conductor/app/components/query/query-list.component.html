@@ -10,9 +10,13 @@
         <connector-display [connector]="connector"></connector-display>
     </manager>
     <section fxLayout="row"
-             fxLayoutAlign="space-between center"
+             fxLayoutAlign="start center"
+             fxLayoutGap="8px"
              class="m4 mt12">
-        <p class="m4 mat-subheading-2">Queries</p>
+        <p class="m4 mat-subheading-2"
+           fxFlex>Queries</p>
+        <query-upload options="color-blue"
+                      (parsed)="upload.emit($event)"></query-upload>
         <button mat-button
                 color="primary"
                 (click)="add.emit()">

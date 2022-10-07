@@ -87,7 +87,7 @@ export class ConnectorRoute implements OnInit, OnDestroy {
     //#region Connector
 
     editConnector = (connector: Connector) => this.dialog.open(ConnectorDialog, {
-        data: Object.assign({} as Connector, connector),
+        data: Object.assign(<Connector>{}, connector),
         disableClose: true
     })
         .afterClosed()
@@ -100,25 +100,31 @@ export class ConnectorRoute implements OnInit, OnDestroy {
 
     //#region Query
 
+    private openQueryEditor = (query: Query) => this.dialog.open(QueryDialog, {
+        data: query,
+        disableClose: true
+    });
+
     selected = (query: Query) => this.query?.id === query.id;
 
-    add = () => this.dialog.open(QueryDialog, {
-        data: { connectorId: this.connector?.id } as Query,
-        disableClose: true
-    })
+    add = () => this.openQueryEditor(
+        Object.assign(
+            this.queryApi.getBase(),
+            <Query>{ connectorId: this.connector?.id }
+        )
+    )
         .afterClosed()
         .subscribe((res: Query) => res && this.querySrc.refresh());
 
     download = (query: Query) => this.queryApi.download(query);
 
-    fork = (query: Query) => this.dialog.open(QueryDialog, {
-        data: Object.assign(
-            {} as Query,
+    fork = (query: Query) => this.openQueryEditor(
+        Object.assign(
+            this.queryApi.getBase(),
             query,
-            { id: 0, name: '', url: '' } as Query
-        ),
-        disableClose: true
-    })
+            <Query>{ id: 0, name: '', url: '' }
+        )
+    )
         .afterClosed()
         .subscribe((res: Query) => res && this.querySrc.refresh());
 
@@ -133,6 +139,9 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         .afterClosed()
         .subscribe(async (result: boolean) => {
             if (result) {
+                if (this.selected(query))
+                    this.select(query);
+
                 const res = await this.queryApi.remove(query);
                 res && this.querySrc.refresh();
             }
@@ -153,6 +162,17 @@ export class ConnectorRoute implements OnInit, OnDestroy {
 
             this.form = GenerateQueryForm(value, this.fb);
         }
+    }
+
+    upload = (value: string) => {
+        this.openQueryEditor(
+            Object.assign(
+                this.queryApi.getBase(),
+                <Query>{ value, connectorId: this.connector?.id }
+            )
+        )
+        .afterClosed()
+        .subscribe((res: Query) => res && this.querySrc.refresh());
     }
 
     update = (query: Query) => this.storage.set(query);
@@ -193,8 +213,8 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         data: this.editorApi,
         disableClose: true
     })
-    .afterClosed()
-    .subscribe(() => this.editorApi.getAll());
+        .afterClosed()
+        .subscribe(() => this.editorApi.getAll());
 
     //#endregion
 }

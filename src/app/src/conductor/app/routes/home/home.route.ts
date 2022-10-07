@@ -47,7 +47,7 @@ export class HomeRoute implements OnInit, OnDestroy {
   .subscribe((res: Connector) => res && this.connectorSrc.refresh());
 
   edit = (connector: Connector) => this.dialog.open(ConnectorDialog, {
-    data: Object.assign({} as Connector, connector),
+    data: Object.assign(<Connector>{}, connector),
     disableClose: true    
   })
   .afterClosed()
