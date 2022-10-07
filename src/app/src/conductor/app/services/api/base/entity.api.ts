@@ -44,7 +44,7 @@ export abstract class EntityApi<T extends Entity> {
         url: ''
     }
 
-    init = () => this.base();
+    getBase = () => this.base();
 
     generateStorage = (entity: T): IStorage<T> =>
         new SessionStorage<T>(
