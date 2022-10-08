@@ -39,9 +39,7 @@ export abstract class EntityApi<T extends Entity> {
     }
 
     protected base = () => <T>{
-        id: 0,
-        name: '',
-        url: ''
+        id: 0
     }
 
     getBase = () => this.base();
@@ -57,26 +55,12 @@ export abstract class EntityApi<T extends Entity> {
         this.generator.generateSource<T>(
             this.queryUrl
         );
-        
+
     getById$ = (id: number): Observable<T> =>
         this.http.get<T>(`${this.api}getById/${id}`);
 
     getById = (id: number): Promise<T> =>
         firstValueFrom(this.getById$(id));
-
-    getByUrl$ = (url: string): Observable<T> =>
-        this.http.get<T>(`${this.api}getByUrl/${url}`);
-
-    getByUrl = (url: string): Promise<T> =>
-        firstValueFrom(this.getByUrl$(url));
-
-    validateName$ = (entity: T): Observable<boolean> =>
-        this.http.post<boolean>(`${this.api}validateName`, entity);
-
-    validateName = (entity: T): Promise<boolean> =>
-        firstValueFrom(
-            this.validateName$(entity)
-        );
 
     validate$ = (entity: T): Observable<ValidationResult> =>
         this.http.post<ValidationResult>(`${this.api}validate`, entity);

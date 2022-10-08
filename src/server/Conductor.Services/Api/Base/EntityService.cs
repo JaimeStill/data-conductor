@@ -107,7 +107,7 @@ public class EntityService<T> : IService<T> where T : Entity
     {
         ValidationResult result = new();
 
-        if (string.IsNullOrEmpty(entity.Name))
+        if (string.IsNullOrWhiteSpace(entity.Name))
             result.AddMessage("Name is required");
 
         if (!await ValidateName(entity))

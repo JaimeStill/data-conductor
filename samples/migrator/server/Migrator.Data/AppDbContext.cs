@@ -1,43 +1,17 @@
 ﻿using System.Reflection;
 using Migrator.Models.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Migrator.Data;
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    {
-        SavingChanges += CompleteEntity;
-    }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-    private IEnumerable<EntityEntry> ChangeTrackerEntities() =>
-        ChangeTracker
-            .Entries()
-            .Where(x => x.Entity is Entity);
-
-    private bool EntitiesChanged() =>
-        ChangeTrackerEntities().Any();
-
-    private void CompleteEntity(object sender, SavingChangesEventArgs e)
-    {
-        if (EntitiesChanged())
-        {
-            var entities = ChangeTrackerEntities()
-                .Select(x => x.Entity)
-                .Cast<Entity>();
-
-            foreach (Entity entity in entities)
-                entity.Complete();
-        }
-    }
+    public DbSet<Person> People { get; set; }
+    public DbSet<Product> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(
-            Assembly.GetExecutingAssembly()
-        );
-
         modelBuilder
             .Model
             .GetEntityTypes()

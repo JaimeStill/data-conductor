@@ -21,14 +21,6 @@ public abstract class EntityController<T> : ControllerBase where T : Entity
     public virtual async Task<IActionResult> GetById([FromRoute]int id) =>
         Ok(await svc.GetById(id));
 
-    [HttpGet("[action]/{url}")]
-    public virtual async Task<IActionResult> GetByUrl([FromRoute]string url) =>
-        Ok(await svc.GetByUrl(url));
-
-    [HttpPost("[action]")]
-    public virtual async Task<IActionResult> ValidateName([FromBody]T entity) =>
-        Ok(await svc.ValidateName(entity));
-
     [HttpPost("[action]")]
     public virtual async Task<IActionResult> Validate([FromBody]T entity) =>
         Ok(await svc.Validate(entity));

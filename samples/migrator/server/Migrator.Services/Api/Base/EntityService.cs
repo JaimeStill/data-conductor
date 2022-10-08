@@ -16,22 +16,11 @@ public class EntityService<T> : IService<T> where T : Entity
     public EntityService(AppDbContext db)
     {
         this.db = db;
-        query = SetGraph(db.Set<T>());
+        query = db.Set<T>();
     }
 
-    protected virtual Func<IQueryable<T>, string, IQueryable<T>> Search =>
-        (values, term) =>
-            values.Where(x =>
-                x.Name.ToLower().Contains(term.ToLower())
-            );
-
-    protected virtual void ClearGraph(T entity)
-    {
-        return;
-    }
-
-    protected virtual IQueryable<T> SetGraph(DbSet<T> data) =>
-        data;
+    protected virtual Func<IQueryable<T>, string, IQueryable<T>> Search => 
+        (values, term) => values;
 
     protected virtual async Task<QueryResult<E>> Query<E>(
         IQueryable<E> queryable,
@@ -51,7 +40,7 @@ public class EntityService<T> : IService<T> where T : Entity
 
     protected virtual async Task<List<E>> Get<E>(
         IQueryable<E> queryable,
-        string sort = "Name"
+        string sort = "Id"
     ) where E : Entity =>
         await queryable
             .ApplySorting(new QueryOptions { Sort = sort })
@@ -75,7 +64,6 @@ public class EntityService<T> : IService<T> where T : Entity
     {
         try
         {
-            ClearGraph(entity);
             db.Set<T>().Update(entity);
             await db.SaveChangesAsync();
             return entity;
@@ -94,27 +82,8 @@ public class EntityService<T> : IService<T> where T : Entity
     public virtual async Task<T> GetById(int id) =>
         await query.FirstOrDefaultAsync(x => x.Id == id);
 
-    public virtual async Task<T> GetByUrl(string url) =>
-        await query.FirstOrDefaultAsync(x => x.Url.ToLower() == url.ToLower());    
-
-    public virtual async Task<bool> ValidateName(T entity) =>
-        !await db.Set<T>().AnyAsync(x =>
-            x.Id != entity.Id
-            && x.Name.ToLower() == entity.Name.ToLower()
-        );
-
-    public virtual async Task<ValidationResult> Validate(T entity)
-    {
-        ValidationResult result = new();
-
-        if (string.IsNullOrEmpty(entity.Name))
-            result.AddMessage("Name is required");
-
-        if (!await ValidateName(entity))
-            result.AddMessage("Name is already in use");
-
-        return result;
-    }
+    public virtual Task<ValidationResult> Validate(T entity) =>
+        Task.FromResult(new ValidationResult());
 
     public virtual async Task<T> Save(T entity)
     {
@@ -139,7 +108,6 @@ public class EntityService<T> : IService<T> where T : Entity
     {
         try
         {
-            ClearGraph(entity);
             db.Set<T>().Remove(entity);
             int result = await db.SaveChangesAsync();
 

@@ -1,5 +1,0 @@
-{
-    "ConnectionStrings": {
-        "App": "Server=.\\DevSql;Trusted_Connection=True;TrustServerCertificate=True;Database=migrator-dev"
-    }
-}
