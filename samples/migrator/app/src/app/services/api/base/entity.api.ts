@@ -21,6 +21,7 @@ export abstract class EntityApi<T extends Entity> {
             ? endpoint
             : `${endpoint}/`;
 
+    protected conductorApi: string;
     protected api: string;
     protected queryUrl: string;
 
@@ -33,6 +34,7 @@ export abstract class EntityApi<T extends Entity> {
         protected generator: QueryGeneratorService,
         protected http: HttpClient
     ) {
+        this.conductorApi = environment.conductorApi;
         this.endpoint = this.setEndpoint(endpoint);
         this.api = `${environment.api}${this.endpoint}`;
         this.queryUrl = `${this.api}query`;
@@ -56,11 +58,13 @@ export abstract class EntityApi<T extends Entity> {
             this.queryUrl
         );
 
-    getById$ = (id: number): Observable<T> =>
-        this.http.get<T>(`${this.api}getById/${id}`);
+    isMigrated$ = (entity: T): Observable<boolean> =>
+        this.http.post<boolean>(`${this.api}isMigrated`, entity);
 
-    getById = (id: number): Promise<T> =>
-        firstValueFrom(this.getById$(id));
+    isMigrated = (entity: T): Promise<boolean> =>
+        firstValueFrom(
+            this.isMigrated$(entity)
+        );
 
     validate$ = (entity: T): Observable<ValidationResult> =>
         this.http.post<ValidationResult>(`${this.api}validate`, entity);

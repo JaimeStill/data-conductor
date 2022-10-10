@@ -17,9 +17,9 @@ public abstract class EntityController<T> : ControllerBase where T : Entity
     public virtual async Task<IActionResult> Query([FromQuery]QueryParams queryParams) =>
         Ok(await svc.Query(queryParams));
 
-    [HttpGet("[action]/{id:int}")]
-    public virtual async Task<IActionResult> GetById([FromRoute]int id) =>
-        Ok(await svc.GetById(id));
+    [HttpPost("[action]")]
+    public virtual async Task<IActionResult> IsMigrated([FromBody]T entity) =>
+        Ok(await svc.IsMigrated(entity));
 
     [HttpPost("[action]")]
     public virtual async Task<IActionResult> Validate([FromBody]T entity) =>

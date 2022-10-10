@@ -35,6 +35,9 @@ namespace Migrator.Data.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("LegacyPersonId")
+                        .HasColumnType("int");
+
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
 

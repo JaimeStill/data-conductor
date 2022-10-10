@@ -11,7 +11,7 @@ using Migrator.Data;
 namespace Migrator.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221008001646_Initial")]
+    [Migration("20221010231915_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace Migrator.Data.Migrations
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LegacyPersonId")
+                        .HasColumnType("int");
 
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");

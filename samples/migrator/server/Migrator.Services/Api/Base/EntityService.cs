@@ -5,7 +5,6 @@ using Migrator.Models.Validation;
 using Migrator.Services.Exceptions;
 using Migrator.Services.Extensions;
 using Migrator.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace Migrator.Services.Api;
 public class EntityService<T> : IService<T> where T : Entity
@@ -37,14 +36,6 @@ public class EntityService<T> : IService<T> where T : Entity
             data.SetupSearch(s, search)
         );
     }
-
-    protected virtual async Task<List<E>> Get<E>(
-        IQueryable<E> queryable,
-        string sort = "Id"
-    ) where E : Entity =>
-        await queryable
-            .ApplySorting(new QueryOptions { Sort = sort })
-            .ToListAsync();
 
     protected virtual async Task<T> Add(T entity)
     {
@@ -79,8 +70,8 @@ public class EntityService<T> : IService<T> where T : Entity
             query, queryParams, Search
         );
 
-    public virtual async Task<T> GetById(int id) =>
-        await query.FirstOrDefaultAsync(x => x.Id == id);
+    public virtual Task<bool> IsMigrated(T entity) =>
+        Task.FromResult(false);
 
     public virtual Task<ValidationResult> Validate(T entity) =>
         Task.FromResult(new ValidationResult());
