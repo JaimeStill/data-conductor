@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "server-build",
+            "program": "${workspaceFolder}/server/Personify.Api/bin/Debug/net6.0/Personify.Api.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/server/Personify.Api",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        }
+    ]
+}
