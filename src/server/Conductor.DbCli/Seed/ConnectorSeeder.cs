@@ -19,6 +19,16 @@ public class ConnectorSeeder : Seeder<Connector, ConductorContext>
                 {
                     new()
                     {
+                        Name = "Count People",
+                        Value = "SELECT COUNT(*) AS 'total'\nFROM [AdventureWorks2019].[Person].[Person]"
+                    },
+                    new()
+                    {
+                        Name = "Migrate People",
+                        Value = "SELECT DISTINCT\n    p.LastName as 'lastName',\n    p.FirstName as 'firstName',\n    p.MiddleName as 'middleName'\nFROM [AdventureWorks2019].[Person].[Person] as p\nORDER BY p.LastName, p.FirstName\nOFFSET {{skip}} ROWS\nFETCH NEXT {{size}} ROWS ONLY"
+                    },
+                    new()
+                    {
                         Name = "Search People",
                         Value = "SELECT TOP (20)\n    p.LastName as 'lastName',\n    p.FirstName as 'firstName',\n    p.MiddleName as 'middleName'\nFROM [AdventureWorks2019].[Person].[Person] as p\nWHERE p.LastName like '{{lastName}}%' and p.FirstName like '{{firstName}}%'\nORDER BY p.LastName, p.FirstName"
                     },

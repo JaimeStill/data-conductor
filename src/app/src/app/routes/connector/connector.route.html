@@ -39,18 +39,18 @@
                         </mat-form-field>
                         <button mat-button
                                 class="color-blue"
-                                [disabled]="form.invalid || (query.interpolated && !(interpolation?.length > 0))"
+                                [disabled]="querying || form.invalid || (query.interpolated && !(interpolation?.length > 0))"
                                 (click)="execute()">
                             Execute Query
                         </button>
                         <button mat-button
                                 color="primary"
-                                [disabled]="!(storage.hasState) || form.invalid"
+                                [disabled]="querying || !(storage.hasState) || form.invalid"
                                 (click)="save()">
                             Save Query
                         </button>
                         <button mat-button
-                                [disabled]="!(storage.hasState)"
+                                [disabled]="querying || !(storage.hasState)"
                                 (click)="clearStorage()">
                             Clear Cache
                         </button>
@@ -70,6 +70,9 @@
                             Editor Settings
                         </button>
                     </mat-toolbar>
+                    <mat-progress-bar *ngIf="querying"
+                                      mode="indeterminate"
+                                      color="primary"></mat-progress-bar>
                     <query-form class="m8"
                                 [form]="form"
                                 [editor]="editor"

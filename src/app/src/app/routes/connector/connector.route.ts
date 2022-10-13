@@ -53,6 +53,7 @@ export class ConnectorRoute implements OnInit, OnDestroy {
     query: Query;
     querySrc: QuerySource<Query>;
     results: any[];
+    querying: boolean = false;
 
     interpolation: string = '';
     form: FormGroup;
@@ -150,6 +151,8 @@ export class ConnectorRoute implements OnInit, OnDestroy {
         });
 
     select = (query: Query) => {
+        this.interpolation = '';
+
         if (this.selected(query)) {
             this.query = null;
             this.form = null;
@@ -173,11 +176,16 @@ export class ConnectorRoute implements OnInit, OnDestroy {
                 <Query>{ value, connectorId: this.connector?.id }
             )
         )
-        .afterClosed()
-        .subscribe((res: Query) => res && this.querySrc.refresh());
+            .afterClosed()
+            .subscribe((res: Query) => res && this.querySrc.refresh());
     }
 
-    update = (query: Query) => this.storage.set(query);
+    update = (query: Query) => {
+        this.storage.set(query);
+
+        if (!query.interpolated && this.interpolation)
+            this.interpolation = '';
+    }
 
     clearStorage = () => {
         this.form.reset(this.query);
@@ -198,10 +206,13 @@ export class ConnectorRoute implements OnInit, OnDestroy {
 
     clearResults = () => this.results = null;
 
-    execute = async () =>
+    execute = async () => {
+        this.querying = true;
         this.results = this.form.get('interpolated').value
             ? await this.queryApi.executeWithProps(this.form.value, this.interpolation)
             : await this.queryApi.execute(this.form.value);
+        this.querying = false;
+    }
 
     //#endregion
 
