@@ -1,22 +1,61 @@
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Personify.Data;
 using Personify.Models.Entities;
 using Personify.Models.Validation;
+using Personify.Hubs;
 
 namespace Personify.Services.Api;
 public class PersonService : EntityService<Person>
 {
-    public PersonService(AppDbContext db) : base(db) { }
+    readonly IHubContext<MigrationHub> hub;
+    public PersonService(AppDbContext db, IHubContext<MigrationHub> hub) : base(db)
+    {
+        this.hub = hub;
+    }
+
+    async Task Broadcast(string message, string style = "color-text") =>
+        await hub
+            .Clients
+            .All
+            .SendAsync("output", new MigrationOutput { Message = message, Style = style });
 
     public async Task<int> Migrate(List<Person> people)
     {
-        foreach (Person person in people)
+        try
         {
-            if (!await IsMigrated(person))
-                await db.People.AddAsync(person);
-        }
+            await Broadcast($"Migrating {people.Count} people...");
+            foreach (Person person in people)
+            {
+                if (!await IsMigrated(person))
+                {
+                    await db.People.AddAsync(person);
+                    await Broadcast($"Migrating {person.LastName}, {person.FirstName}", "color-primary");
+                }
+                else
+                    await Broadcast($"Skipping {person.LastName}, {person.FirstName}", "color-orange");
+            }
 
-        return await db.SaveChangesAsync();
+            int result = await db.SaveChangesAsync();
+
+            await Broadcast($"Successfully migrated {result} people");
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            await Broadcast(ex.Message, "color-warn");
+
+            Exception inner = ex.InnerException;
+
+            while (inner is not null)
+            {
+                await Broadcast(inner.Message, "color-warn");
+                inner = inner.InnerException;
+            }
+
+            return 0;
+        }
     }
 
     protected override Func<IQueryable<Person>, string, IQueryable<Person>> Search =>

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Personify.Hubs;
 using Personify.Data;
 using Personify.Services.Api;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,7 @@ builder
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSignalR();
 builder.Services.AddAppServices();
 
 var app = builder.Build();
@@ -48,8 +50,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseRouting();
 app.UseCors();
+app.UseRouting();
 app.MapControllers();
+app.MapHubs();
 
 app.Run();

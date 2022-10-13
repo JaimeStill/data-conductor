@@ -49,8 +49,8 @@ export abstract class EntityApi<T extends Entity> {
     generateStorage = (entity: T): IStorage<T> =>
         new SessionStorage<T>(
             entity?.id
-                ? `conductor-${this.endpoint}-${entity.id}`
-                : `conductor-${this.endpoint}-new`
+                ? `personify-${this.endpoint}-${entity.id}`
+                : `personify-${this.endpoint}-new`
         );
 
     query = (): QuerySource<T> =>

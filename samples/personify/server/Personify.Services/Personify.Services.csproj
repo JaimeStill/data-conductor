@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Personify.Data\Personify.Data.csproj" />
     <ProjectReference Include="..\Personify.Models\Personify.Models.csproj" />
+    <ProjectReference Include="..\Personify.Hubs\Personify.Hubs.csproj" />
   </ItemGroup>
 
   <ItemGroup>
