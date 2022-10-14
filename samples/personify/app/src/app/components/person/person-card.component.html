@@ -1,0 +1,27 @@
+<card layout="row"
+      alignment="start stretch"
+      width="auto"
+      options="background-card rounded card-outline-divider m4">
+    <section fxLayout="row"
+             fxLayoutAlign="space-between center"
+             fxLayoutGap="8px"
+             class="p8"
+             fxFlex>
+        <mat-icon [color]="isMigrated ? 'primary' : 'default'">{{isMigrated ? 'star' : 'star_border'}}</mat-icon>
+        <p class="m4 mat-subheading-2"
+           fxFlex>{{display() | truncate:24}}</p>
+        <mat-progress-spinner *ngIf="loading || migrating"
+                              color="primary"
+                              mode="indeterminate"
+                              [diameter]="28"></mat-progress-spinner>
+    </section>
+    <section fxLayout="column"
+             fxLayoutAlign="center center">
+        <button mat-icon-button
+                color="primary"
+                [disabled]="loading || migrating || isMigrated"
+                (click)="migrate()">
+            <mat-icon class="material-icons-outlined">file_download</mat-icon>
+        </button>
+    </section>
+</card>

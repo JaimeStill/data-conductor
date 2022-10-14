@@ -46,7 +46,7 @@ public class EditorService : EntityService<Editor>
     {
         ValidationResult result = await base.Validate(editor);
 
-        if (string.IsNullOrEmpty(editor.Font))
+        if (string.IsNullOrWhiteSpace(editor.Font))
             result.AddMessage("Editor must specify a Font");
 
         if (editor.FontSize < 10 || editor.FontSize > 24)

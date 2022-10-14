@@ -1,6 +1,5 @@
 using Conductor.Data;
 using Conductor.Models.Entities;
-using Conductor.Models.Query;
 using Conductor.Models.Validation;
 using Conductor.Services.Sql;
 using Microsoft.EntityFrameworkCore;
@@ -42,10 +41,10 @@ public class ConnectorService : EntityService<Connector>
     {
         ValidationResult result = await base.Validate(entity);
 
-        if (string.IsNullOrEmpty(entity.Server))
+        if (string.IsNullOrWhiteSpace(entity.Server))
             result.AddMessage("Connector must specify a Server");
 
-        if (string.IsNullOrEmpty(entity.Database))
+        if (string.IsNullOrWhiteSpace(entity.Database))
             result.AddMessage("Connector must specify a Database");
 
         if (!await ValidateDatabase(entity))

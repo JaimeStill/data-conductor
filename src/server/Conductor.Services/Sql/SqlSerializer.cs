@@ -17,7 +17,11 @@ public static class SqlSerializer
                 for (var i = 0; i < reader.VisibleFieldCount; i++)
                     data.Add(
                         EnsureSafeName(data, reader.GetName(i)),
-                        JsonValue.Create(reader.GetValue(i))
+                        JsonValue.Create(
+                            await reader.IsDBNullAsync(i)
+                                ? string.Empty
+                                : reader.GetValue(i)
+                        )
                     );
 
                 results.Add(data);

@@ -1,0 +1,57 @@
+<section fxLayout="row | wrap"
+         fxLayoutAlign="start start"
+         class="full-height p8">
+    <section fxLayout="column"
+             fxLayoutAlign="start stretch"
+             class="full-height card-outline-divider rounded m4">
+        <option-tabs fxFlex
+                     [loading]="loading"
+                     (get)="get($event)"
+                     (search)="search($event)"></option-tabs>
+        <console [output]="socket.output$"></console>
+    </section>
+    <section fxLayout="column"
+             fxLayoutAlign="start stretch"
+             fxLayoutGap="8px"
+             class="card-outline-divider rounded m4 full-height"
+             fxFlex>
+        <mat-toolbar fxLayout="row"
+                     fxLayoutAlign="start center"
+                     class="rounded">
+            <p class="m4 mat-title"
+               fxFlex>People</p>
+            <button mat-button
+                    color="warn"
+                    [disabled]="!(people?.length > 0) || loading"
+                    (click)="clear()">
+                Clear People
+            </button>
+            <button mat-button
+                    color="primary"
+                    [disabled]="!(people?.length > 0) || loading"
+                    (click)="migrate()">
+                Migrate All
+            </button>
+        </mat-toolbar>
+        <mat-progress-bar *ngIf="loading"
+                          mode="indeterminate"
+                          color="primary"></mat-progress-bar>
+        <section *ngIf="people?.length > 0"
+                 fxLayout="row"
+                 fxLayoutAlign="space-between center"
+                 fxFlexAlign="start"
+                 class="background-card my4 mx12 p8 card-outline-divider rounded">
+            <mat-icon color="primary">star</mat-icon> = Migrated
+        </section>
+        <section *ngIf="people?.length > 0"
+                 fxLayout="row | wrap"
+                 fxLayoutAlign="start start"
+                 class="full-height overflow p8"
+                 fxLayoutGap="8px">
+            <person-card *ngFor="let p of people"
+                         [person]="p"
+                         [loading]="loading"
+                         [trigger]="trigger$"></person-card>
+        </section>
+    </section>
+</section>

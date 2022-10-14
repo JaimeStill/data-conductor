@@ -24,6 +24,8 @@ public static class SqlConnector
             if (connection.State != ConnectionState.Open)
                 result.AddMessage("Unable to connect to the database");
 
+            await connection.CloseAsync();
+
             return result;
         }
         catch (Exception ex)

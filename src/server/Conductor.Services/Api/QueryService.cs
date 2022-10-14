@@ -43,6 +43,12 @@ public class QueryService : EntityService<Query>
         sort
     );
 
+    public async Task<JsonArray> Execute(string url, string props = null)
+    {
+        Query query = await GetByUrl(url);
+        return await Execute(query, props);
+    }
+
     public async Task<JsonArray> Execute(Query query, string props = null)
     {
         Connector connector = query.Connector

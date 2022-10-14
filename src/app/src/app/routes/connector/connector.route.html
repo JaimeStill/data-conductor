@@ -1,0 +1,90 @@
+<ng-template #loading>
+    <mat-progress-bar mode="indeterminate"
+                      color="accent"></mat-progress-bar>
+</ng-template>
+<ng-container *ngIf="connector else loading">
+    <section fxLayout="row | wrap"
+             fxLayoutAlign="start start"
+             fxLayoutGap="8px"
+             class="full-height p8">
+        <query-list *ngIf="querySrc"
+                    [connector]="connector"
+                    [querySrc]="querySrc"
+                    [current]="query"
+                    (editConnector)="editConnector($event)"
+                    (add)="add()"
+                    (download)="download($event)"
+                    (fork)="fork($event)"
+                    (remove)="remove($event)"
+                    (select)="select($event)"
+                    (upload)="upload($event)"></query-list>
+        <ng-container *ngIf="editorApi.editor$ | async as editor else loading">
+            <section fxLayout="column"
+                     fxLayoutAlign="start stretch"
+                     class="card-outline-divider rounded full-height"
+                     fxFlex>
+                <section *ngIf="form && storage"
+                         fxLayout="column"
+                         fxLayoutAlign="start stretch"
+                         fxFlex>
+                    <mat-toolbar class="rounded"
+                                 fxLayoutAlign="start center"
+                                 fxLayoutGap="8px">
+                        <mat-form-field fxFlex
+                                        class="mr16">
+                            <mat-label>Interpolation</mat-label>
+                            <input matInput
+                                   [disabled]="!(query.interpolated)"
+                                   [(ngModel)]="interpolation">
+                        </mat-form-field>
+                        <button mat-button
+                                class="color-blue"
+                                [disabled]="querying || form.invalid || (query.interpolated && !(interpolation?.length > 0))"
+                                (click)="execute()">
+                            Execute Query
+                        </button>
+                        <button mat-button
+                                color="primary"
+                                [disabled]="querying || !(storage.hasState) || form.invalid"
+                                (click)="save()">
+                            Save Query
+                        </button>
+                        <button mat-button
+                                [disabled]="querying || !(storage.hasState)"
+                                (click)="clearStorage()">
+                            Clear Cache
+                        </button>
+                        <ng-container *ngIf="editorApi.editors$ | async as editors else loading">
+                            <mat-form-field class="mx16">
+                                <mat-label>Editor Configuration</mat-label>
+                                <mat-select [value]="editor"
+                                            [compareWith]="compareEditors"
+                                            (selectionChange)="selectEditor($event.value)">
+                                    <mat-option *ngFor="let e of editors"
+                                                [value]="e">{{e.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </ng-container>
+                        <button mat-button
+                                (click)="editorSettings()">
+                            Editor Settings
+                        </button>
+                    </mat-toolbar>
+                    <mat-progress-bar *ngIf="querying"
+                                      mode="indeterminate"
+                                      color="primary"></mat-progress-bar>
+                    <query-form class="m8"
+                                [form]="form"
+                                [editor]="editor"
+                                [showEditor]="true"
+                                (update)="update($event)"></query-form>
+                </section>
+                <ng-container *ngIf="query">
+                    <results [results]="results"
+                             [spacing]="editor?.tabSpacing"
+                             (clear)="clearResults()"></results>
+                </ng-container>
+            </section>
+        </ng-container>
+    </section>
+</ng-container>
