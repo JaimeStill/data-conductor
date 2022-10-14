@@ -3,6 +3,5 @@ export const environment = {
   server: 'http://localhost:5555/',
   api: 'http://localhost:5555/api/',
   rig: 'http://localhost:5556/',
-  conductor: 'http://localhost:5000/',
-  conductorApi: 'http://localhost:5000/api/'
+  conductor: 'http://localhost:5000/api/query/'
 };

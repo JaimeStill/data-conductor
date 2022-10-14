@@ -8,17 +8,8 @@ using Personify.Hubs;
 namespace Personify.Services.Api;
 public class PersonService : EntityService<Person>
 {
-    readonly IHubContext<MigrationHub> hub;
-    public PersonService(AppDbContext db, IHubContext<MigrationHub> hub) : base(db)
-    {
-        this.hub = hub;
-    }
-
-    async Task Broadcast(string message, string style = "color-text") =>
-        await hub
-            .Clients
-            .All
-            .SendAsync("output", new MigrationOutput { Message = message, Style = style });
+    public PersonService(AppDbContext db, IHubContext<MigrationHub> hub)
+        : base(db, hub) { }
 
     public async Task<int> Migrate(List<Person> people)
     {

@@ -21,7 +21,6 @@ export abstract class EntityApi<T extends Entity> {
             ? endpoint
             : `${endpoint}/`;
 
-    protected conductorApi: string;
     protected api: string;
     protected queryUrl: string;
 
@@ -34,7 +33,6 @@ export abstract class EntityApi<T extends Entity> {
         protected generator: QueryGeneratorService,
         protected http: HttpClient
     ) {
-        this.conductorApi = environment.conductorApi;
         this.endpoint = this.setEndpoint(endpoint);
         this.api = `${environment.api}${this.endpoint}`;
         this.queryUrl = `${this.api}query`;

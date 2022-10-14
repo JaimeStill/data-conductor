@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.SignalR;
 using Personify.Data;
+using Personify.Hubs;
 using Personify.Models.Entities;
 using Personify.Models.Query;
 using Personify.Models.Validation;
@@ -10,15 +12,37 @@ namespace Personify.Services.Api;
 public class EntityService<T> : IService<T> where T : Entity
 {
     protected AppDbContext db;
+    protected readonly IHubContext<MigrationHub> hub;
     protected IQueryable<T> query;
 
-    public EntityService(AppDbContext db)
+    public EntityService(AppDbContext db, IHubContext<MigrationHub> hub)
     {
         this.db = db;
+        this.hub = hub;
         query = db.Set<T>();
     }
 
-    protected virtual Func<IQueryable<T>, string, IQueryable<T>> Search => 
+    protected virtual string Label(T entity) => "Data";
+
+    protected async Task Broadcast(string message, string style = "color-text") =>
+        await hub
+            .Clients
+            .All
+            .SendAsync("output", new MigrationOutput { Message = message, Style = style });
+
+    protected async Task BroadcastSuccess(T entity, string op) =>
+        await Broadcast($"{Label(entity)} successfully {op}", "color-primary");
+
+    protected async Task BroadcastException(Exception ex)
+    {
+        if (ex is not null)
+        {
+            await Broadcast(ex.Message, "color-warn");
+            await BroadcastException(ex.InnerException);
+        }
+    }
+
+    protected virtual Func<IQueryable<T>, string, IQueryable<T>> Search =>
         (values, term) => values;
 
     protected virtual async Task<QueryResult<E>> Query<E>(
@@ -43,6 +67,7 @@ public class EntityService<T> : IService<T> where T : Entity
         {
             await db.Set<T>().AddAsync(entity);
             await db.SaveChangesAsync();
+            await BroadcastSuccess(entity, "added");
             return entity;
         }
         catch (Exception ex)
@@ -57,10 +82,12 @@ public class EntityService<T> : IService<T> where T : Entity
         {
             db.Set<T>().Update(entity);
             await db.SaveChangesAsync();
+            await BroadcastSuccess(entity, "updated");
             return entity;
         }
         catch (Exception ex)
         {
+            await BroadcastException(ex);
             throw new ServiceException<T>("Update", ex);
         }
     }
@@ -87,10 +114,13 @@ public class EntityService<T> : IService<T> where T : Entity
                     ? await Update(entity)
                     : await Add(entity);
             else
-                throw new ServiceException<T>("Save", new Exception(validity.Message));
+                await Broadcast(validity.Message, "color-warn");
+
+            return null;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
+            await BroadcastException(ex);
             throw new ServiceException<T>("Save", ex);
         }
     }
@@ -102,12 +132,20 @@ public class EntityService<T> : IService<T> where T : Entity
             db.Set<T>().Remove(entity);
             int result = await db.SaveChangesAsync();
 
-            return result > 0
-                ? entity.Id
-                : 0;
+            if (result > 0)
+            {
+                await BroadcastSuccess(entity, "removed");
+                return entity.Id;
+            }
+            else
+            {
+                await Broadcast($"An error occurred removing {Label(entity)}");
+                return 0;
+            }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
+            await BroadcastException(ex);
             throw new ServiceException<T>("Remove", ex);
         }
     }

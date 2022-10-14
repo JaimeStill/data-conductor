@@ -15,22 +15,26 @@ interface SocketState {
 export class MigrationSocket {
     private endpoint = `${environment.server}migration-socket`;
     private connection: HubConnection;
+    private output = new BehaviorSubject<MigrationOutput>(null);
     private state = new BehaviorSubject<SocketState>({
         connected: false,
         error: null
     });
 
-    output = new Array<MigrationOutput>();
+    output$ = this.output.asObservable();
     state$ = this.state.asObservable();
 
     constructor() {
         this.connection = new HubConnectionBuilder()
-            .withUrl(this.endpoint)
+            .withAutomaticReconnect()
+            .withUrl(this.endpoint, {
+                withCredentials: false
+            })
             .build();
 
         this.connection.on(
             'output',
-            (data: MigrationOutput) => this.output.push(data)
+            (data: MigrationOutput) => this.output.next(data)
         );
 
         this.connection

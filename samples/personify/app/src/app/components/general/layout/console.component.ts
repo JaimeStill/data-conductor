@@ -1,29 +1,38 @@
 import {
-    AfterViewChecked,
     Component,
     ElementRef,
     Input,
+    OnInit,
+    OnDestroy,
     ViewChild
 } from '@angular/core';
 
-interface ConsoleMessage {
-    message: string;
-    isError: boolean;
-}
+import {
+    Observable,
+    Subscription
+} from 'rxjs';
+
+import { MigrationOutput } from '../../../models';
 
 @Component({
     selector: 'console',
     templateUrl: 'console.component.html',
     styleUrls: ['console.component.scss']
 })
-export class ConsoleComponent implements AfterViewChecked {
+export class ConsoleComponent implements OnInit {
+    private sub: Subscription;
+
+    messages: MigrationOutput[] = new Array<MigrationOutput>();
+
     @Input() height: number = 250;
     @Input() expanded: boolean = true;
     @Input() consoleStyle: string = 'p8';
     @Input() messageStyle: string = 'm4';
-    @Input() messages: ConsoleMessage[] = new Array<ConsoleMessage>();
+    @Input() output: Observable<MigrationOutput>;
 
     @ViewChild('console') console: ElementRef;
+
+    private delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
     private scrollConsole = () => {
         if (this.console?.nativeElement) {
@@ -31,8 +40,18 @@ export class ConsoleComponent implements AfterViewChecked {
         }
     }
 
-    ngAfterViewChecked() {
-        this.scrollConsole();
+    ngOnInit(): void {
+        this.sub = this.output?.subscribe(async (message: MigrationOutput) => {
+            if (message) {
+                this.messages.push(message);
+                await this.delay(10);
+                this.scrollConsole();
+            }
+        })
+    }
+
+    ngOnDestroy(): void {
+        this.sub?.unsubscribe();
     }
 
     toggleExpanded = () => this.expanded = !this.expanded;

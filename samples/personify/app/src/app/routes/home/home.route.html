@@ -1,1 +1,85 @@
-<p class="mat-title m8">Home</p>
+<section fxLayout="row | wrap"
+         fxLayoutAlign="start start"
+         class="full-height p8">
+    <section fxLayout="column"
+             fxLayoutAlign="start stretch"
+             class="full-height card-outline-divider rounded m4">
+        <mat-tab-group fxFlex>
+            <mat-tab label="Get People">
+                <section fxLayout="column"
+                         fxLayoutAlign="start stretch"
+                         class="p8">
+                    <mat-form-field class="my4">
+                        <mat-label>Skip</mat-label>
+                        <input matInput
+                               type="number"
+                               [(ngModel)]="getOptions.skip">
+                    </mat-form-field>
+                    <mat-form-field class="my4">
+                        <mat-label>Size</mat-label>
+                        <input matInput
+                               type="number"
+                               [(ngModel)]="getOptions.size">
+                    </mat-form-field>
+                    <button mat-stroked-button
+                            color="primary"
+                            [disabled]="getOptions?.size < 1 || loading"
+                            (click)="get()">
+                        Get People
+                    </button>
+                </section>
+            </mat-tab>
+            <mat-tab label="Search People">
+                <section fxLayout="column"
+                         fxLayoutAlign="start stretch"
+                         class="p8">
+                    <mat-form-field class="my4">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput
+                               [(ngModel)]="searchOptions.lastName">
+                    </mat-form-field>
+                    <mat-form-field class="my4">
+                        <mat-label>First Name</mat-label>
+                        <input matInput
+                               [(ngModel)]="searchOptions.firstName">
+                    </mat-form-field>
+                    <button mat-stroked-button
+                            color="primary"
+                            [disabled]="!(searchOptions?.lastName) || !(searchOptions?.firstName) || loading"
+                            (click)="search()">
+                        Search People
+                    </button>
+                </section>
+            </mat-tab>
+        </mat-tab-group>
+        <console [output]="socket.output$"></console>
+    </section>
+    <section fxLayout="column"
+             fxLayoutAlign="start stretch"
+             class="card-outline-divider rounded m4 full-height"
+             fxFlex>
+        <mat-toolbar fxLayout="row"
+                     fxLayoutAlign="space-between center"
+                     class="rounded">
+            <p class="m4 mat-title">People</p>
+            <button mat-stroked-button
+                    [disabled]="!(people?.length > 0) || loading"
+                    (click)="migrate()">
+                Migrate All
+            </button>
+        </mat-toolbar>
+        <mat-progress-bar *ngIf="loading"
+                          mode="indeterminate"
+                          color="primary"></mat-progress-bar>
+        <section *ngIf="people?.length > 0"
+                 fxLayout="row | wrap"
+                 fxLayoutAlign="start start"
+                 class="full-height overflow p8"
+                 fxLayoutGap="8px">
+            <p class="m4 p8 background-card card-outline-divider rounded mat-body-strong"
+               *ngFor="let p of people">
+                {{p.lastName}}, {{p.firstName}} {{p.middleName}}
+            </p>
+        </section>
+    </section>
+</section>

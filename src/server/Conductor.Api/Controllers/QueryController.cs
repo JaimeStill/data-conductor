@@ -33,7 +33,7 @@ public class QueryController : EntityController<Query>
 
     [HttpGet("[action]/{url}/{*props}")]
     [Produces("application/json")]
-    public async Task<IActionResult> Execute(
+    public async Task<IActionResult> ExecuteWithProps(
         [FromRoute] string url,
         [FromRoute] string props
     ) => Ok(await querySvc.Execute(url, props));
