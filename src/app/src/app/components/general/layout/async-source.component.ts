@@ -7,7 +7,10 @@ import { QuerySource } from '../../../models';
 
 @Component({
     selector: 'async-source',
-    templateUrl: 'async-source.component.html'
+    templateUrl: 'async-source.component.html',
+    host: {
+        'class': 'overflow full-height'
+    }
 })
 export class AsyncSourceComponent<T> {
     @Input() src: QuerySource<T>;

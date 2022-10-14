@@ -50,6 +50,22 @@
             }
         },
         {
+            "label": "db-drop",
+            "command": "dotnet",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/server/Conductor.Data"
+            },
+            "args": [
+                "ef",
+                "database",
+                "drop",
+                "-f",
+                "-s",
+                "../Conductor.Api"
+            ]
+        },
+        {
             "label": "db-update",
             "command": "dotnet ef database update -s ../Conductor.Api",
             "type": "shell",

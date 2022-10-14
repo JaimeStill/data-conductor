@@ -40,6 +40,10 @@ export class ConsoleComponent implements OnInit {
         }
     }
 
+    barStyle = (): string => this.expanded
+        ? 'background-app-bar'
+        : `background-app-bar rounded-bottom`;
+
     ngOnInit(): void {
         this.sub = this.output?.subscribe(async (message: MigrationOutput) => {
             if (message) {
@@ -53,6 +57,8 @@ export class ConsoleComponent implements OnInit {
     ngOnDestroy(): void {
         this.sub?.unsubscribe();
     }
+
+    clear = () => this.messages = new Array<MigrationOutput>();
 
     toggleExpanded = () => this.expanded = !this.expanded;
 }

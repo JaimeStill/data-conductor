@@ -1,6 +1,10 @@
 import {
+    BehaviorSubject,
+    Observable
+} from 'rxjs';
+
+import {
     GetPersonOptions,
-    MigrationOutput,
     MigrationSocket,
     Person,
     SearchPersonOptions
@@ -22,45 +26,40 @@ import { Component } from '@angular/core';
     ]
 })
 export class HomeRoute {
+    private trigger: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
     loading: boolean = false;
     people: Person[];
-
-    getOptions: GetPersonOptions = {
-        skip: 0,
-        size: 200
-    };
-
-    searchOptions: SearchPersonOptions = {
-        lastName: '',
-        firstName: ''
-    };
-
     socket: MigrationSocket = new MigrationSocket();
+    trigger$: Observable<boolean> = this.trigger.asObservable();
 
     constructor(
         private conductor: ConductorService,
         private personApi: PersonApi
     ) { }
 
-    get = async () => {
-        if (this.getOptions.size > 0) {
+    get = async (getOptions: GetPersonOptions) => {
+        if (getOptions?.size > 0) {
             this.loading = true;
-            this.people = await this.conductor.getPeople(this.getOptions);
+            this.people = await this.conductor.getPeople(getOptions);
             this.loading = false;
         }
     }
 
-    search = async () => {
-        if (this.searchOptions.lastName && this.searchOptions.firstName) {
+    search = async (searchOptions: SearchPersonOptions) => {
+        if (searchOptions?.lastName && searchOptions?.firstName) {
             this.loading = true;
-            this.people = await this.conductor.searchPeople(this.searchOptions);
+            this.people = await this.conductor.searchPeople(searchOptions);
             this.loading = false;
         }
     }
+
+    clear = () => this.people = null;
 
     migrate = async () => {
         this.loading = true;
         await this.personApi.migrate(this.people);
+        this.trigger.next(true);
         this.loading = false;
     }
 }

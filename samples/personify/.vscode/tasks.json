@@ -50,6 +50,22 @@
             }
         },
         {
+            "label": "db-drop",
+            "command": "dotnet",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/server/Personify.Data"
+            },
+            "args": [
+                "ef",
+                "database",
+                "drop",
+                "-f",
+                "-s",
+                "../Personify.Api"
+            ]
+        },
+        {
             "label": "db-update",
             "command": "dotnet ef database update -s ../Personify.Api",
             "type": "shell",

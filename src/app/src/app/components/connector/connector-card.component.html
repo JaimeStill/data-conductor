@@ -3,13 +3,13 @@
       width="auto"
       options="background-card rounded card-outline-divider">
     <section fxLayout="row"
-             fxLayoutAlign="start center">
+             fxLayoutAlign="space-between center">
+        <connector-display [connector]="connector"></connector-display>
         <mat-progress-spinner *ngIf="testing"
                               mode="indeterminate"
                               color="primary"
                               class="m8"
-                              [diameter]="32"></mat-progress-spinner>
-        <connector-display [connector]="connector"></connector-display>
+                              [diameter]="28"></mat-progress-spinner>
     </section>
     <section [fxLayout]="controlLayout"
              [fxLayoutAlign]="controlAlignment"

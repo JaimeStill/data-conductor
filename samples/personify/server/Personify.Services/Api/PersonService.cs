@@ -11,6 +11,9 @@ public class PersonService : EntityService<Person>
     public PersonService(AppDbContext db, IHubContext<MigrationHub> hub)
         : base(db, hub) { }
 
+    protected override string Label(Person entity) =>
+        $"{entity.LastName}, {entity.FirstName} {entity.MiddleName}".Trim();
+
     public async Task<int> Migrate(List<Person> people)
     {
         try
@@ -60,8 +63,7 @@ public class PersonService : EntityService<Person>
     public override async Task<bool> IsMigrated(Person person) =>
         await db.People
             .AnyAsync(x =>
-                x.Id != person.Id
-                && x.LegacyPersonId > 0
+                x.LegacyPersonId > 0
                 && x.LegacyPersonId == person.LegacyPersonId
             );
 

@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { Components } from './components';
 import { Dialogs } from './dialogs';
 import { Forms } from './forms';
+import { Pipes } from './pipes';
 
 import {
   RouteComponents,
@@ -26,6 +27,7 @@ import {
     ...Components,
     ...Dialogs,
     ...Forms,
+    ...Pipes,
     ...RouteComponents
   ],
   imports: [

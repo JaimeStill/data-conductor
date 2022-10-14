@@ -3,8 +3,17 @@
          class="rounded">
     <mat-divider></mat-divider>
     <section fxLayout="row"
-             fxLayoutAlign="space-between center">
-        <p class="m8">Console</p>
+             fxLayoutAlign="start center"
+             fxLayoutGap="8px"
+             [ngClass]="barStyle()">
+        <button mat-icon-button
+                color="warn"
+                [disabled]="!(messages?.length > 0)"
+                (click)="clear()">
+            <mat-icon>clear</mat-icon>
+        </button>
+        <p class="m8 mat-subheading-2"
+           fxFlex>Console</p>
         <button mat-icon-button
                 class="m8"
                 (click)="toggleExpanded()">
