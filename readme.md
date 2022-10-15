@@ -7,9 +7,13 @@ Uses [Microsoft.Data.SqlClient](https://github.com/dotnet/SqlClient) via the [Sq
 * [Demonstration](#demonstration)
 * [Requirements](#requirements)
 * [Running](#running)
+    * [Conductor Server](#conductor-server)
+    * [Conductor App](#conductor-app)
+* [Samples](#samples)
+    * [ConsoleQuery](#consolequery)
+    * [Personify](#personify)
 * [Project Layout](#project-layout)
 * [Features](#features)
-* [Samples](#samples)
 
 ## Demonstration
 [Back to Top](#data-conductor)
@@ -56,18 +60,30 @@ cd data-conductor
 code .
 ```
 
-## Conductor Server
+> Note: Adjust the following connection strings as needed to match your SQL Server instance:
+> * [appsettings.Development.json](./src/server/Conductor.Api/appsettings.Development.json)
+> * [connections.json](./src/server/Conductor.Data/connections.json)
 
-In a VS Code terminal, change directory to `src/server` and execute the following:
+> Note: All of the commands illustrated below are available as VS Code Tasks:
+>
+> ![image](https://user-images.githubusercontent.com/14102723/195957288-e16efe91-ad3e-4528-811f-b5f79c2e9537.png)
+
+### Conductor Server
+[Back to Top](#data-conductor)
+
+In a VS Code terminal, change directory to `./src/server` and execute the following:
 
 ```bash
+# Restore NuGet dependencies and build the server
 dotnet build
 
-cd Conductor.Data
+# Generate app database, apply migrations, and seed data
+cd ./Conductor.DbCli
 
-dotnet ef database update -s ..\Conductor.Api
+dotnet run
 
-cd ..\Conductor.Api
+# Start the API server
+cd ../Conductor.Api
 
 dotnet watch run
 ```
@@ -76,16 +92,111 @@ Navigate to http://localhost:5000/swagger and you should see the API avaialble:
 
 ![image](https://user-images.githubusercontent.com/14102723/195956992-5407b9df-1b74-4e0d-8936-3c5da4f47a77.png)
 
-Alternatively, you can just use the provided VS Code tasks:
+### Conductor App
+[Back to Top](#data-conductor)
 
-![image](https://user-images.githubusercontent.com/14102723/195956845-fe902b73-219b-49bd-ba43-0b447a4b61e5.png)
+In a VS Code terminal, change directory to `./src/app` and execute the following:
 
+```bash
+# Install node dependencies
+npm i
+
+# Make sure the API server from the above 
+# steps is running in a separate terminal.
+npm start
+```
+
+Navigate to http://localhost:3000 and you should see the client app:
+
+![image](https://user-images.githubusercontent.com/14102723/195957861-6bd524bd-6f07-460b-81f5-6f0b0b4a135d.png)
+
+## Samples
+[Back to Top](#data-conductor)
+
+The following sections illustrate how to build and run the [samples](/samples) provided in this repository.
+
+### [ConsoleQuery](./samples/ConsoleQuery/)
+[Back to Top](#data-conductor)
+
+This sample was written to test the [Connector](./src/server/Conductor.Models/Entities/Connector.cs), [Query](./src/server/Conductor.Models/Entities/Query.cs), [SqlConnector](./src/server/Conductor.Services/Sql/SqlConnector.cs), and [SqlSerializer](./src/server//Conductor.Services/Sql/SqlSerializer.cs) interactions at the lowest level.
+
+> Adjust the Server property in [Program](./samples/ConsoleQuery/Program.cs#L8) to match your SQL Server instance.
+
+To run, simply execute the following from a terminal:
+
+```bash
+cd ./samples/ConsoleQuery
+
+dotnet run
+```
+
+You should see the console app output:
+
+![image](https://user-images.githubusercontent.com/14102723/195958885-95df53fe-7f6e-4710-9fd6-595ceefb07f7.png)
+
+### [Personify](./samples/personify/)
+[Back to Top](#data-conductor)
+
+> Note: Adjust the connection string in [appsettings.Development.json](./samples/personify/server/Personify.Api/appsettings.Development.json) to match your SQL Server instance.
+
+**Prerequisites** - Ensure you've followed all of the steps in [Conductor Server](#conductor-server) and have the Conductor API server running in its own terminal.
+
+Open the `./samples/personify` workspace in a VS Code workspace:
+
+```bash
+cd ./samples/personify
+
+code .
+```
+
+#### Personify Server
+[Back to Top](#data-conductor)
+
+In a VS Code terminal, change directory to `./server` and execute the following:
+
+```bash
+# Restore NuGet dependencies and build the server
+dotnet build
+
+# Generate app database and apply migrations
+cd ./Personify.Data
+
+dotnet ef database update ../Personify.Api
+
+# Start the API server
+cd ../Personify.Api
+
+dotnet watch run
+```
+
+Navigate to http://localhost:5555/swagger and you should see the API avaialble:
+
+![image](https://user-images.githubusercontent.com/14102723/195959491-e72be4e8-2ab8-4c19-98ea-ce8173bb5603.png)
+
+#### Personify App
+[Back to Top](#data-conductor)
+
+In a VS Code terminal, change directory to `./app` and execute the following:
+
+```bash
+# Install node dependencies
+npm i
+
+# Make sure the API server from the above 
+# steps is running in a separate terminal.
+npm start
+```
+
+Navigate to http://localhost:3333 and you should see the client app:
+
+![image](https://user-images.githubusercontent.com/14102723/195959742-ffbec37a-7ff3-4854-9f19-227f7e408332.png)
 
 ## Project Layout
 [Back to Top](#data-conductor)
 
+Coming soon.
+
 ## Features
 [Back to Top](#data-conductor)
 
-## Samples
-[Back to Top](#data-conductor)
+Coming soon.

@@ -92,6 +92,15 @@
             "options": {
                 "cwd": "${workspaceFolder}/src/server/Conductor.DbCli"
             }
+        },
+        {
+            "label": "run-console-query",
+            "command": "dotnet run",
+            "type": "shell",
+            "problemMatcher": "$msCompile",
+            "options": {
+                "cwd": "${workspaceFolder}/samples/ConsoleQuery"
+            }
         }
     ]
 }

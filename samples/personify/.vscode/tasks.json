@@ -10,6 +10,14 @@
             }
         },
         {
+            "label": "client-install",
+            "command": "npm i",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/app/"
+            }
+        },
+        {
             "label": "client-start",
             "command": "npm run start",
             "type": "shell",
